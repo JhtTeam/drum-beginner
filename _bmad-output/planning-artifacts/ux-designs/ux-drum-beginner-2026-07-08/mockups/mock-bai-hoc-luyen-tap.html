@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock — Trang bài học + khối luyện tập (Drum Beginner)</title>
+<style>
+  /* Tokens từ DESIGN.md — Sân khấu tối */
+  :root {
+    --surface-base: #17171A; --surface-raised: #202024; --surface-overlay: #2A2A30;
+    --border-subtle: #33333A;
+    --amber: #FFB020; --amber-bright: #FFC94D; --amber-dim: #7A5A1A;
+    --text-primary: #F2EFE9; --text-secondary: #A8A29E; --text-muted: #918B83;
+    --text-on-amber: #1A1206;
+    --hand-right: #FFB020; --hand-left: #5EC8D8;
+    --beat-inactive: #3A3A42; --success: #4ADE80; --focus-ring: #FFC94D;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    background: var(--surface-base); color: var(--text-primary);
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-size: 16px; line-height: 1.6;
+  }
+  header {
+    display: flex; align-items: center; gap: 32px;
+    padding: 0 24px; height: 60px;
+    border-bottom: 1px solid var(--border-subtle); background: var(--surface-base);
+    position: sticky; top: 0;
+  }
+  .logo { font-weight: 800; color: var(--amber); }
+  nav { display: flex; gap: 24px; font-size: 14px; }
+  nav a { color: var(--text-secondary); text-decoration: none; }
+  nav a.active { color: var(--text-primary); border-bottom: 2px solid var(--amber); padding-bottom: 4px; }
+  .streak { margin-left: auto; font-size: 14px; color: var(--text-secondary); }
+  main { max-width: 1080px; margin: 0 auto; padding: 32px 24px; }
+  .breadcrumb { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+  h1 { font-size: 32px; font-weight: 700; line-height: 1.25; margin-bottom: 4px; }
+  .goal { color: var(--text-secondary); margin-bottom: 32px; }
+
+  .theory { max-width: 680px; margin-bottom: 32px; }
+  .theory h2 { font-size: 24px; font-weight: 600; margin-bottom: 12px; }
+  .theory p { margin-bottom: 12px; color: var(--text-primary); }
+  .term { border-bottom: 1px dashed var(--text-muted); }
+
+  .video-card {
+    max-width: 680px; aspect-ratio: 16/9; background: var(--surface-overlay);
+    border-radius: 16px; position: relative; margin-bottom: 48px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border-subtle); cursor: pointer;
+  }
+  .video-badge {
+    position: absolute; top: 12px; left: 12px; background: var(--amber);
+    color: var(--text-on-amber); font-size: 12px; font-weight: 700;
+    padding: 2px 8px; border-radius: 6px;
+  }
+  .video-title { position: absolute; bottom: 12px; left: 12px; right: 12px; font-size: 14px; color: var(--text-secondary); }
+  .play-btn {
+    width: 64px; height: 64px; border-radius: 9999px; background: var(--amber);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-on-amber); font-size: 24px;
+  }
+
+  /* ===== Khối luyện tập ===== */
+  .practice {
+    background: var(--surface-raised); border: 1px solid var(--border-subtle);
+    border-radius: 16px; padding: 32px; text-align: center;
+  }
+  .practice-label { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 24px; }
+
+  .pattern { display: flex; justify-content: center; gap: 12px; margin-bottom: 32px; }
+  .cell {
+    width: 88px; height: 88px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px; font-weight: 800; background: transparent;
+  }
+  .cell.r { color: var(--hand-right); }
+  .cell.l { color: var(--hand-left); }
+  .cell.active { background: var(--surface-overlay); outline: 2px solid var(--amber-bright); }
+
+  .beats { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 32px; }
+  .dot { width: 20px; height: 20px; border-radius: 9999px; background: var(--beat-inactive); }
+  .dot.accent { width: 28px; height: 28px; }
+  .dot.on { background: var(--amber-bright); box-shadow: 0 0 16px rgba(255,201,77,.5); }
+
+  .bpm-row { display: flex; align-items: baseline; justify-content: center; gap: 12px; margin-bottom: 8px; }
+  .bpm { font-size: 96px; font-weight: 700; letter-spacing: -0.02em; color: var(--amber); font-variant-numeric: tabular-nums; line-height: 1; }
+  .bpm-unit { font-size: 20px; color: var(--text-secondary); }
+  .target { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+  .target b { color: var(--text-secondary); }
+
+  .controls { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .btn {
+    height: 44px; padding: 0 20px; border-radius: 10px; border: 1px solid var(--border-subtle);
+    background: transparent; color: var(--text-primary); font-size: 16px; font-family: inherit; cursor: pointer;
+  }
+  .btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .btn-primary { background: var(--amber); color: var(--text-on-amber); border: none; font-weight: 700; padding: 0 32px; }
+  .btn-primary:hover { background: var(--amber-bright); }
+  .hint { font-size: 13px; color: var(--text-muted); }
+  kbd {
+    background: var(--surface-overlay); border: 1px solid var(--border-subtle);
+    border-radius: 6px; padding: 1px 6px; font-size: 12px; font-family: inherit;
+  }
+
+  .complete-row { display: flex; justify-content: center; gap: 12px; margin-top: 48px; }
+  .note-tech {
+    max-width: 680px; margin: 32px auto 0; font-size: 14px; color: var(--text-secondary);
+    background: var(--surface-raised); border-left: 3px solid var(--amber-dim);
+    padding: 12px 16px; border-radius: 0 10px 10px 0; text-align: left;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <span class="logo">🥁 Drum Beginner</span>
+    <nav>
+      <a href="#">Trang chủ</a>
+      <a href="#" class="active">Lộ trình</a>
+      <a href="#">Metronome</a>
+      <a href="#">Tiến độ</a>
+    </nav>
+    <span class="streak">🔥 Chuỗi 4 ngày · Tuần 1: 3/6 bài</span>
+  </header>
+
+  <main>
+    <div class="breadcrumb">Lộ trình → Tuần 1 → Bài 3</div>
+    <h1>Single Stroke — bài tập tay đầu tiên</h1>
+    <p class="goal">Mục tiêu: đánh đều hai tay R–L luân phiên, sạch ở 60 bpm rồi nâng dần lên 70.</p>
+
+    <section class="theory">
+      <h2>Lý thuyết nhanh</h2>
+      <p><span class="term">Single stroke roll</span> (dùi đơn) là rudiment nền tảng nhất: hai tay luân phiên R L R L, mỗi tay một tiếng. Nghe đơn giản nhưng mục tiêu thật là <b>lực đều nhau giữa hai tay</b> — tay trái thường yếu hơn.</p>
+      <p>Ngồi thẳng, cầm dùi như Bài 1, thả lỏng cổ tay. Đánh trên pad hoặc snare, để dùi nảy tự nhiên.</p>
+    </section>
+
+    <div class="video-card">
+      <span class="video-badge">VI</span>
+      <div class="play-btn">▶</div>
+      <span class="video-title">Học Trống cơ bản Bài 2: Bài tập tay cơ bản (Single Stroke) — Pong Ơi · 7:18</span>
+    </div>
+
+    <section class="practice">
+      <div class="practice-label">Luyện tập theo metronome</div>
+
+      <div class="pattern">
+        <div class="cell r">R</div>
+        <div class="cell l active">L</div>
+        <div class="cell r">R</div>
+        <div class="cell l">L</div>
+      </div>
+
+      <div class="beats">
+        <div class="dot accent"></div>
+        <div class="dot on"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="bpm-row"><span class="bpm">60</span><span class="bpm-unit">bpm</span></div>
+      <p class="target">Mục tiêu: sạch ở <b>60</b> → nâng dần <b>70</b> · Tempo tốt nhất của bạn: <b>—</b></p>
+
+      <div class="controls">
+        <button class="btn">−5</button>
+        <button class="btn">−1</button>
+        <button class="btn btn-primary">■ Dừng</button>
+        <button class="btn">+1</button>
+        <button class="btn">+5</button>
+        <button class="btn">Tap tempo</button>
+      </div>
+      <p class="hint"><kbd>Space</kbd> bắt đầu/dừng · <kbd>↑</kbd><kbd>↓</kbd> ±1 · <kbd>Shift+↑↓</kbd> ±5 · <kbd>T</kbd> tap tempo</p>
+    </section>
+
+    <div class="note-tech">💡 Ghi chú kỹ thuật: thả lỏng cổ tay, không gồng vai. Nếu hai tay không đều, chậm lại 5 bpm — sạch trước, nhanh sau.</div>
+
+    <div class="complete-row">
+      <button class="btn">Ghi tempo tốt nhất: 60</button>
+      <button class="btn btn-primary">✓ Hoàn thành bài hôm nay</button>
+    </div>
+  </main>
+</body>
+</html>
