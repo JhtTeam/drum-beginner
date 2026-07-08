@@ -2,10 +2,11 @@
 title: 'Story 1.2: MetronomeEngine — audibly accurate ticking'
 type: 'feature'
 created: '2026-07-08'
-status: 'in-review'
+status: 'done'
 baseline_revision: '6a1b346fd69018781e54a80f069a0f19e9672078'
+final_revision: '2ede5011910765e2426c9aa9d5a1d4a7664a9782'
 review_loop_iteration: 0
-followup_review_recommended: false
+followup_review_recommended: true
 context:
   - '{project-root}/_bmad-output/implementation-artifacts/1-2-metronome-engine-nghe-duoc-nhip-chuan.md'
   - '{project-root}/_bmad-output/implementation-artifacts/epic-1-context.md'
@@ -120,3 +121,27 @@ warnings: [oversized]
 **Manual checks (if no CLI):**
 - `npm run dev`: start → even ticks, accent audible; hide tab 60s → no stutter/burst; change tempo while running → smooth from next beat; navigate to `/lo-trinh` and back → still running, UI correct; reload → defaults 60/4/4.
 - After push: Vercel production deploy green (build = `npm run check`).
+
+## Auto Run Result
+
+Status: done (implementation + adversarial review complete; committed `2ede501`, not pushed)
+
+**Summary:** Story 1.2 implemented — framework-free `MetronomeEngine` in `src/core/audio/` with lookahead scheduling (Web Worker 25ms ticker, 100ms schedule-ahead on the audio clock), accented beat 1 (880/440Hz synthesized clicks), tempo clamp 40–200 effective from the next beat, tap tempo, immutable snapshots for `useSyncExternalStore`, lazy singleton AudioContext at first user gesture, `pagehide` → `stop()` (never `close()`), plus the minimal start/stop + tempo-input UI on `/metronome`.
+
+**Files changed:**
+- `../../src/core/audio/metronome-engine.ts` — engine class, DI, scheduler, catch-up guard
+- `../../src/core/audio/metronome-engine.test.ts` — 24 unit tests, pure fake deps (node env)
+- `../../src/core/audio/tick-worker.ts` — message-driven setInterval worker, intervalMs guard
+- `../../src/core/audio/index.ts` — real wiring, singleton export, worker error listener, pagehide
+- `../../src/ui/useMetronome.ts` — `useSyncExternalStore` binding hook
+- `../../src/features/metronome/MetronomePage.tsx` — placeholder → minimal UI (draft-commit tempo input)
+- `../../src/features/metronome/MetronomePage.module.css` — token-only styles
+- `src/core/.gitkeep`, `src/ui/.gitkeep` deleted; story/sprint-status artifacts synced to `review`
+
+**Review breakdown:** 2 parallel reviewers (adversarial + edge-case). 8 patches applied (3 medium: scheduler catch-up guard against post-sleep click bursts; listener exception isolation; tempo-input rework so mid-range values are typeable — 5 low: resume() non-running states + rejection, `typeof window` guard, worker error listener + intervalMs validation, setBeatsPerBar guard + integer bpm rounding, toggle min-width). 1 deferred (master gain stage for the shared AudioContext — matters at story 2.3, logged in deferred-work.md). 6 rejected as noise. No intent gaps, no spec repairs — zero loopbacks.
+
+**Follow-up review recommended: true** — the review pass changed core engine scheduling behavior (catch-up threshold semantics) and reworked the UI input's commit model; an independent pass over `2ede501` would be cheap insurance.
+
+**Verification performed:** red-green TDD (suite failed before implementation); `npx vitest run src/core/audio` 24/24; `npm run check` exit 0 (tsc -b, oxlint src, 32/32 tests, vite build with worker bundled); all referenced CSS tokens verified present in tokens.css.
+
+**Residual risks:** browser-only behaviors (audible accent, hidden-tab 60s continuity, cross-route persistence, iOS resume) are implemented per the verified mechanisms and unit-tested at engine level but not yet human-verified in a real browser; production deploy not pushed. Story Task 5's two manual subtasks remain open in the story file.
