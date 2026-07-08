@@ -68,6 +68,26 @@ so that nền móng sẵn sàng và mỗi thay đổi sau này tự động lên
   - [ ] Push GitHub + kết nối Vercel project (CẦN USER: repo chưa có git remote, không có gh/vercel CLI trên máy)
   - [ ] Verify production: deep link `https://<domain>/lo-trinh` → 200 (sau khi user deploy)
 
+### Review Findings
+
+- [x] [Review][Patch] Không có catch-all 404 route — URL lạ render màn hình trống hoàn toàn, không nav, không lối thoát [src/app/App.tsx:14]
+- [x] [Review][Patch] App dark-theme không khai báo `color-scheme: dark` — flash trắng khi load + scrollbar/form control sáng [src/styles/global.css, index.html]
+- [x] [Review][Patch] Bottom tab bar bỏ qua iOS safe-area inset (`env(safe-area-inset-bottom)` + `viewport-fit=cover`) [src/app/AppLayout.module.css:8, index.html:6]
+- [x] [Review][Patch] `activeNavPath` nghiêm ngặt hơn router matcher — trailing slash (`/lo-trinh/`) và khác hoa-thường render trang nhưng mất active tab; `/bai-hoc` không id lại active "Lộ trình" trên trang trống [src/app/routes.ts:21-29]
+- [x] [Review][Patch] `LESSON_BASE` lặp lại prefix của `ROUTES.lesson` — hai nguồn chân lý, vi phạm tinh thần AD-6 [src/app/routes.ts:8,14]
+- [x] [Review][Patch] `lessonPath(id)` không encode id — id chứa `/`,`?`,`#` sinh URL chết [src/app/routes.ts:16-18]
+- [x] [Review][Patch] Vitest `include` bỏ sót `.test.tsx` — test component tương lai bị skip im lặng, gate xanh giả [vite.config.ts:10]
+- [x] [Review][Patch] Dead zone 0.02px giữa hai breakpoint (`max-width: 767.98px` vs `min-width: 768px`) — dùng range syntax `width < 768px` hai phía [src/styles/tokens.css:141, src/app/AppLayout.module.css:47]
+- [x] [Review][Patch] `min-height: 100vh` → `100dvh` (dynamic toolbar mobile) [src/app/AppLayout.module.css:2]
+- [x] [Review][Patch] `tsconfig.node.json` thiếu `strict: true` — vite.config.ts compile non-strict [tsconfig.node.json]
+- [x] [Review][Patch] `package.json` thiếu `engines.node >= 22.12` (AR-1) — máy Node cũ fail khó hiểu thay vì bị chặn rõ ràng [package.json]
+- [x] [Review][Patch] `lib` thiếu `DOM.Iterable` — for...of trên NodeList/URLSearchParams sau này fail typecheck khó hiểu [tsconfig.app.json:5]
+- [x] [Review][Patch] Touch target chỉ enforce `min-height` cho `button`, thiếu `min-width` [src/styles/global.css:57]
+- [x] [Review][Defer] SPA rewrite nuốt 404 của asset thiếu (trả HTML 200) — config đúng theo AR-9; xem lại khi load âm thanh thật (story 2.3) — deferred, spec-prescribed
+- [x] [Review][Defer] Component token composite `bpm-display.typography`/`pattern-cell.typography` chưa map riêng (role tokens đã đủ) — map khi MetronomeBlock/PatternGrid tiêu thụ (story 1.3/2.4) — deferred
+- [x] [Review][Defer] ARCHITECTURE-SPINE Structural Seed ghi "RouterProvider" mâu thuẫn AD-6 declarative — cần sửa doc spine, không phải code — deferred, doc reconciliation
+- [x] [Review][Defer] Skip link + focus management khi đổi route (Accessibility Floor) — thêm khi flow thật xuất hiện (story 1.3+) — deferred
+
 ## Dev Notes
 
 ### Điều BẮT BUỘC — architecture guardrails cho story này
@@ -152,7 +172,8 @@ claude-fable-5 (Claude Code)
 - `vercel.json` bake sẵn `buildCommand`/`outputDirectory` — import repo vào Vercel là chạy được, không cần config dashboard.
 - Token map: DESIGN.md frontmatter có 11 component groups (story ước lượng "12" — con số 12 của UX-DR1 tính cả shadow-overlay; đã thêm `--shadow-overlay`).
 - `.gitignore` repo đã có sẵn và đủ (node_modules, dist, .vercel) — giữ nguyên, không lấy bản của template.
-- **CÒN LẠI (cần user):** push GitHub + import Vercel + verify deep link production — máy không có git remote / gh / vercel CLI.
+- **Code review round 1 (2026-07-08):** 3 layer adversarial (Blind Hunter, Edge Case Hunter, Acceptance Auditor) — 13 patch findings applied trong cùng phiên: catch-all 404 route (`NotFoundPage` trong layout), `color-scheme: dark` + theme-color meta, safe-area inset cho bottom tab bar + `viewport-fit=cover`, normalize pathname trong `activeNavPath` (trailing slash/case khớp router matcher, `/bai-hoc` trần → null), derive `ROUTES.lesson` từ `LESSON_BASE`, `encodeURIComponent` trong `lessonPath`, vitest include `.test.{ts,tsx}`, breakpoint range syntax (`width < 768px` / `width >= 768px`) hai phía, `100dvh` + fallback, strict cho tsconfig.node.json, `engines.node >=22.12`, `DOM.Iterable`, button `min-width: 44px`. Tests 6 → 8. Gate xanh sau patch. 4 defer ghi vào deferred-work.md, 7 dismiss.
+- User đã đổi `lint`/`check` sang `oxlint src` (scope lint vào src) — giữ nguyên.
 
 ### File List
 
@@ -169,6 +190,7 @@ claude-fable-5 (Claude Code)
 - src/app/routes.ts (mới)
 - src/app/routes.test.ts (mới — 6 tests)
 - src/app/App.tsx (mới)
+- src/app/NotFoundPage.tsx (mới — review patch: catch-all 404)
 - src/app/AppLayout.tsx (mới)
 - src/app/AppLayout.module.css (mới)
 - src/styles/tokens.css (mới)
@@ -186,3 +208,4 @@ claude-fable-5 (Claude Code)
 ## Change Log
 
 - 2026-07-08: Scaffold Vite 8.1 react-ts vào repo root, TS strict, oxlint giữ nguyên; Structural Seed tree; tokens.css + global.css theo DESIGN.md; router 5 routes + nav responsive + 5 placeholder pages; quality gate `npm run check` (proven: test đỏ → gate đỏ); vercel.json SPA rewrites. Còn lại: push GitHub + deploy Vercel (user action).
+- 2026-07-08: Addressed code review findings — 13 items resolved (404 catch-all, color-scheme dark, iOS safe-area, nav-active normalization, route single-source, id encoding, vitest tsx include, breakpoint range syntax, 100dvh, node tsconfig strict, engines, DOM.Iterable, touch min-width); 4 deferred → deferred-work.md; tests 6 → 8; gate xanh.

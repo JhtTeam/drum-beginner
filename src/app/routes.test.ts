@@ -17,6 +17,11 @@ describe('lessonPath', () => {
   it('build path bài học từ content ID', () => {
     expect(lessonPath('gd1-t2-b3')).toBe('/bai-hoc/gd1-t2-b3')
   })
+
+  it('encode ký tự đặc biệt trong id — không sinh URL vỡ segment', () => {
+    expect(lessonPath('a/b')).toBe('/bai-hoc/a%2Fb')
+    expect(lessonPath('a b?')).toBe('/bai-hoc/a%20b%3F')
+  })
 })
 
 describe('activeNavPath (UX-DR3)', () => {
@@ -35,7 +40,17 @@ describe('activeNavPath (UX-DR3)', () => {
     expect(activeNavPath('/bai-hoc/gd1-t1-b1')).toBe(ROUTES.roadmap)
   })
 
-  it('pathname lạ không active mục nào', () => {
+  it('trailing slash và hoa-thường khớp như router matcher', () => {
+    expect(activeNavPath('/lo-trinh/')).toBe(ROUTES.roadmap)
+    expect(activeNavPath('/LO-TRINH')).toBe(ROUTES.roadmap)
+    expect(activeNavPath('/Metronome/')).toBe(ROUTES.metronome)
+    expect(activeNavPath('/bai-hoc/GD1-T1-B1/')).toBe(ROUTES.roadmap)
+  })
+
+  it('path rơi vào 404 thì không tab nào active', () => {
     expect(activeNavPath('/khong-ton-tai')).toBeNull()
+    expect(activeNavPath('/bai-hoc')).toBeNull()
+    expect(activeNavPath('/bai-hoc/')).toBeNull()
+    expect(activeNavPath('/bai-hoc/a/b')).toBeNull()
   })
 })

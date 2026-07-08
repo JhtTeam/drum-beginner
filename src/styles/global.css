@@ -8,6 +8,11 @@
 @import '@fontsource/be-vietnam-pro/700.css';
 @import '@fontsource/be-vietnam-pro/800.css';
 
+:root {
+  /* UA render scrollbar/form control theo theme tối — khớp "Sân khấu tối" */
+  color-scheme: dark;
+}
+
 *,
 *::before,
 *::after {
@@ -55,6 +60,7 @@ a {
 /* Touch target ≥ 44px cho điều khiển tương tác (UX-DR2) */
 button {
   min-height: 44px;
+  min-width: 44px;
   font-family: inherit;
 }
 

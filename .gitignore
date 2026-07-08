@@ -6,3 +6,4 @@ dist/
 # System
 .DS_Store
 *.log
+.vercel

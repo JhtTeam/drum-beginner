@@ -138,8 +138,9 @@
   --nav-item-active-indicator: 2px solid var(--color-amber);
 }
 
-/* Responsive override đã cam kết (UX-DR1): mobile <768px pattern-letter 56 → 40px */
-@media (max-width: 767.98px) {
+/* Responsive override đã cam kết (UX-DR1): mobile <768px pattern-letter 56 → 40px.
+   Range syntax để không có dead zone với (width >= 768px) phía layout. */
+@media (width < 768px) {
   :root {
     --font-size-pattern-letter: 40px;
   }
