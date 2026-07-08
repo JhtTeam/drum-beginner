@@ -2,8 +2,9 @@
 title: 'Story 1.3: Complete MetronomeBlock — a genuinely usable metronome page'
 type: 'feature'
 created: '2026-07-08'
-status: 'in-review'
+status: 'done'
 baseline_revision: '20e16c2f3c5ace7aced263af399c352d74a65b6d'
+final_revision: '0ef762d73e6a999f8ed50351598b64714c0e1f86'
 review_loop_iteration: 0
 followup_review_recommended: false
 context:
