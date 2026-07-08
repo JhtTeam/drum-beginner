@@ -4,7 +4,7 @@ baseline_commit: 9600f7533cd1b64e0c5144e134c484bc383e7907
 
 # Story 1.1: Khung dự án, design tokens, nav và deploy
 
-Status: in-progress
+Status: done
 
 ## Story
 
@@ -61,12 +61,12 @@ so that nền móng sẵn sàng và mỗi thay đổi sau này tự động lên
   - [x] `"check": "tsc -b && oxlint && vitest run && vite build"` — dùng `tsc -b` thay `tsc --noEmit` vì template dùng project references (tsconfig.json `files: []` + references; cả 2 sub-config đã `noEmit: true` nên `tsc -b` chính là bước typecheck không emit)
   - [x] 6 unit tests cho `app/routes.ts` (ROUTES shape, lessonPath, activeNavPath 4 cases) — vượt yêu cầu ≥1 test
   - [x] `npm run check` xanh local (exit 0)
-- [ ] Task 6: Deploy Vercel (AC: #3)
+- [x] Task 6: Deploy Vercel (AC: #3)
   - [x] `vercel.json` tại root: rewrites `/(.*) → /index.html` + `buildCommand: "npm run check"` + `outputDirectory: "dist"` baked in (Vercel đọc từ file — không cần config dashboard)
   - [x] Verify gate local: thêm test đỏ tạm → `npm run check` exit 1; revert → exit 0
   - [x] Verify SPA fallback local: `vite preview` → GET `/lo-trinh` trả 200 + đúng title app
-  - [ ] Push GitHub + kết nối Vercel project (CẦN USER: repo chưa có git remote, không có gh/vercel CLI trên máy)
-  - [ ] Verify production: deep link `https://<domain>/lo-trinh` → 200 (sau khi user deploy)
+  - [x] Push GitHub (JhtTeam/drum-beginner) + Vercel project linked (user setup) — push auto-deploy Ready
+  - [x] Verify production: https://drum-beginner.vercel.app/lo-trinh → 200, /bai-hoc/gd1-t1-b1 → 200, đúng title app (2026-07-08)
 
 ### Review Findings
 
