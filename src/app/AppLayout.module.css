@@ -1,0 +1,77 @@
+.shell {
+  min-height: 100vh;
+}
+
+/* Mobile <768px (mặc định): bottom tab bar 56px ghim đáy, 4 mục (UX-DR3) */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: var(--nav-height-mobile-tabbar);
+  background: var(--nav-background);
+  border-top: var(--nav-border);
+}
+
+.navInner {
+  display: flex;
+  height: 100%;
+}
+
+.navItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px; /* touch target (UX-DR2) */
+  color: var(--nav-item-color);
+  text-decoration: none;
+  font-size: var(--font-size-small);
+}
+
+.navItemActive {
+  color: var(--color-amber);
+}
+
+.main {
+  max-width: var(--spacing-page-max-width);
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--spacing-gutter);
+  /* chừa chỗ cho tab bar ghim đáy */
+  padding-bottom: calc(var(--nav-height-mobile-tabbar) + var(--spacing-6));
+}
+
+/* Desktop ≥768px: header sticky 60px, item active chữ sáng + gạch chân amber (UX-DR3) */
+@media (min-width: 768px) {
+  .nav {
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    height: var(--nav-height-desktop);
+    border-top: none;
+    border-bottom: var(--nav-border);
+  }
+
+  .navInner {
+    max-width: var(--spacing-page-max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-gutter);
+    gap: var(--spacing-6);
+  }
+
+  .navItem {
+    flex: none;
+    font-size: var(--font-size-body);
+    border-bottom: 2px solid transparent;
+  }
+
+  .navItemActive {
+    color: var(--nav-item-active-color);
+    border-bottom: var(--nav-item-active-indicator);
+  }
+
+  .main {
+    padding-bottom: var(--spacing-12);
+  }
+}

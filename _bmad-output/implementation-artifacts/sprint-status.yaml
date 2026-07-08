@@ -49,8 +49,8 @@ story_location: "{project-root}/_bmad-output/implementation-artifacts"
 
 development_status:
   # Epic 1: Luyện nhịp với Metronome
-  epic-1: backlog
-  1-1-khung-du-an-design-tokens-nav-va-deploy: backlog
+  epic-1: in-progress
+  1-1-khung-du-an-design-tokens-nav-va-deploy: in-progress
   1-2-metronome-engine-nghe-duoc-nhip-chuan: backlog
   1-3-metronome-block-hoan-chinh-trang-metronome-dung-duoc-that: backlog
   epic-1-retrospective: optional

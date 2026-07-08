@@ -1,0 +1,71 @@
+/*
+ * global.css — nền tảng toàn cục (UX-DR2).
+ * Chủ duy nhất của :focus-visible và prefers-reduced-motion (Conventions — Accessibility).
+ * Font Be Vietnam Pro tự host qua @fontsource (AD-7) — subset vietnamese nằm sẵn trong unicode-range.
+ */
+@import '@fontsource/be-vietnam-pro/400.css';
+@import '@fontsource/be-vietnam-pro/600.css';
+@import '@fontsource/be-vietnam-pro/700.css';
+@import '@fontsource/be-vietnam-pro/800.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-h1);
+  line-height: var(--line-height-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-h2);
+  line-height: var(--line-height-h2);
+}
+
+a {
+  color: inherit;
+}
+
+/* Focus ring bàn phím trên mọi phần tử tương tác (Accessibility Floor) */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Touch target ≥ 44px cho điều khiển tương tác (UX-DR2) */
+button {
+  min-height: 44px;
+  font-family: inherit;
+}
+
+/* prefers-reduced-motion: tắt animation nảy/phóng to — đổi màu (state change) vẫn giữ (UX-DR2) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
