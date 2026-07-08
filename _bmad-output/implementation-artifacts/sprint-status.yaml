@@ -1,0 +1,72 @@
+# generated: 2026-07-08
+# last_updated: 2026-07-08
+# project: drum-beginner
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: {project-root}/_bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# Action Item Status:
+#   - open: Committed during a retrospective, not yet addressed
+#   - in-progress: Actively being worked on
+#   - done: Completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - Developer typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+# - Retrospective appends its action items to action_items; sprint-status surfaces open ones
+
+generated: 2026-07-08
+last_updated: 2026-07-08
+project: drum-beginner
+project_key: NOKEY
+tracking_system: file-system
+story_location: "{project-root}/_bmad-output/implementation-artifacts"
+
+development_status:
+  # Epic 1: Luyện nhịp với Metronome
+  epic-1: backlog
+  1-1-khung-du-an-design-tokens-nav-va-deploy: backlog
+  1-2-metronome-engine-nghe-duoc-nhip-chuan: backlog
+  1-3-metronome-block-hoan-chinh-trang-metronome-dung-duoc-that: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: Học theo lộ trình Giai đoạn 1
+  epic-2: backlog
+  2-1-giao-trinh-giai-doan-1-trang-lo-trinh-trang-bai-hoc: backlog
+  2-2-video-youtube-trong-bai-hoc: backlog
+  2-3-so-do-bo-trong-tuong-tac: backlog
+  2-4-khoi-luyen-tap-stick-control-trong-bai: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Tiến độ, streak và trang chủ "Hôm nay"
+  epic-3: backlog
+  3-1-progress-store-nut-hoan-thanh-bai-hom-nay: backlog
+  3-2-trang-chu-hom-nay-streak: backlog
+  3-3-trang-tien-do-ghi-tempo-tot-nhat: backlog
+  3-4-export-import-tien-do: backlog
+  epic-3-retrospective: optional
