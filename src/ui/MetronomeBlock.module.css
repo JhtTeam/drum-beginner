@@ -1,0 +1,165 @@
+/*
+ * MetronomeBlock — token-only (AD-5). Hai raw hợp thức duy nhất:
+ * nhãn "bpm" 20px (mock, không có token riêng) và glow dot active
+ * (box-shadow một-chỗ-dùng — ngoại lệ elevation, DESIGN.md).
+ */
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-6);
+  text-align: center;
+}
+
+/* ===== beat dots ===== */
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-4);
+  /* transform scale không chiếm layout — chừa chỗ dọc + ngang cho accent 1.4× khỏi tràn */
+  padding: var(--spacing-2) var(--spacing-1);
+}
+
+.dot {
+  width: var(--beat-dot-size);
+  height: var(--beat-dot-size);
+  border-radius: var(--beat-dot-radius);
+  background: var(--beat-dot-inactive-color);
+}
+
+/* Phách 1 to 1.4× LUÔN LUÔN — phân biệt tĩnh, không phải chuyển động */
+.dotAccent {
+  transform: scale(var(--beat-dot-accent-scale));
+}
+
+/* Đổi màu dot active nằm NGOÀI media query — reduced-motion vẫn thấy nhịp bằng màu */
+.dotActive {
+  background: var(--beat-dot-active-color);
+}
+
+/* Glow chỉ khi người dùng không giảm chuyển động (UX-DR2 / reconcile-ux GAP-3) */
+@media (prefers-reduced-motion: no-preference) {
+  .dotActive {
+    /* glow amber mờ một-chỗ-dùng (ngoại lệ elevation) — màu derive từ token, khỏi drift */
+    box-shadow: 0 0 16px color-mix(in srgb, var(--beat-dot-active-color) 50%, transparent);
+  }
+}
+
+/* ===== BPM display ===== */
+.bpmRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--spacing-3);
+}
+
+.bpmValue {
+  font-size: var(--font-size-display-bpm);
+  font-weight: var(--font-weight-display-bpm);
+  letter-spacing: var(--letter-spacing-display-bpm);
+  color: var(--bpm-display-color);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  /* reserve bề ngang 3 chữ số: 60 → 200 không xô layout (AC-1) */
+  min-width: 3ch;
+  text-align: center;
+}
+
+.bpmUnit {
+  /* raw hợp thức: mock dùng 20px, không có token typography riêng cho nhãn này */
+  font-size: 20px;
+  color: var(--color-text-secondary);
+}
+
+/* ===== transport ===== */
+.transport {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.toggleButton {
+  height: var(--button-primary-height);
+  /* min-width: "▶ Bắt đầu" ↔ "■ Dừng" không làm nhảy layout (nếp 1.2) */
+  min-width: 8em;
+  /* Bấm nhanh liên tục (tap/±): không select text, không double-tap zoom iOS */
+  user-select: none;
+  touch-action: manipulation;
+  padding: 0 var(--spacing-8);
+  background: var(--button-primary-background);
+  color: var(--button-primary-color);
+  border: none;
+  border-radius: var(--button-primary-radius);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-h2);
+  cursor: pointer;
+}
+
+.toggleButton:hover {
+  background: var(--button-primary-hover-background);
+}
+
+.secondaryButton {
+  height: var(--button-secondary-height);
+  padding: 0 var(--spacing-4);
+  background: var(--button-secondary-background);
+  color: var(--button-secondary-color);
+  border: var(--button-secondary-border);
+  border-radius: var(--button-secondary-radius);
+  font-size: var(--font-size-body);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* ===== chọn số phách ===== */
+.picker {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-3);
+}
+
+.pickerButton {
+  height: var(--button-secondary-height);
+  padding: 0 var(--spacing-4);
+  background: var(--button-secondary-background);
+  color: var(--button-secondary-color);
+  border: var(--button-secondary-border);
+  border-radius: var(--button-secondary-radius);
+  font-size: var(--font-size-body);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.pickerButton[aria-pressed='true'] {
+  border-color: var(--color-amber);
+  color: var(--color-amber-bright);
+}
+
+/* ===== kbd hints ===== */
+.hints {
+  margin: 0;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.hints kbd {
+  background: var(--color-surface-overlay);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-sm);
+  padding: 0 var(--spacing-1);
+  font-size: var(--font-size-small);
+  font-family: inherit;
+}
+
+/* Mobile không bàn phím — ẩn hint (breakpoint duy nhất được phép, khớp tokens.css) */
+@media (width < 768px) {
+  .hints {
+    display: none;
+  }
+}

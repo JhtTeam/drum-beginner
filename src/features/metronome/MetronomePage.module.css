@@ -1,44 +1,12 @@
-/* UI tối giản story 1.2 — mọi giá trị qua token var(...) (AD-5). */
-.controls {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--spacing-4);
-  margin-top: var(--spacing-6);
-}
-
-.toggle {
-  height: var(--button-primary-height);
-  /* min-width: label đổi "Bắt đầu"↔"Dừng" không làm nhảy layout ô tempo bên cạnh */
-  min-width: 7em;
-  padding: 0 var(--spacing-6);
-  background: var(--button-primary-background);
-  color: var(--button-primary-color);
-  border: none;
-  border-radius: var(--button-primary-radius);
-  font-size: var(--font-size-body);
-  font-weight: var(--font-weight-h2);
-  cursor: pointer;
-}
-
-.toggle:hover {
-  background: var(--button-primary-hover-background);
-}
-
-.tempoField {
+/* Trang metronome — block căn giữa, thoáng (AD-5: chỉ var(--token)). */
+.page {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-1);
-  font-size: var(--font-size-small);
-  color: var(--color-text-secondary);
+  align-items: center;
+  gap: var(--spacing-8);
+  padding-top: var(--spacing-6);
 }
 
-.tempoField input {
-  height: var(--button-secondary-height);
-  padding: 0 var(--spacing-3);
-  background: var(--color-surface-raised);
-  color: var(--color-text-primary);
-  border: var(--button-secondary-border);
-  border-radius: var(--button-secondary-radius);
-  font-family: var(--font-family);
-  font-size: var(--font-size-body);
+.page h1 {
+  margin: 0;
 }
