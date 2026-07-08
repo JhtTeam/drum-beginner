@@ -1,6 +1,6 @@
 # Story 1.2: MetronomeEngine — nghe được nhịp chuẩn
 
-Status: review
+Status: done
 
 ## Story
 
@@ -55,8 +55,8 @@ so that tôi luyện giữ nhịp với nguồn nhịp đáng tin.
   - [x] Test thêm: beatInBar wrap đúng theo beatsPerBar (1→4→1 với 4/4; đổi 3/4 wrap 1→3); phách 1 schedule bằng âm accent khác phách thường; `setTempo` clamp 40–200; `stop()` không gọi `ctx.close()`; snapshot giữ nguyên reference khi không có gì đổi
 - [x] Task 5: Quality gate + verify thủ công (AC: #1, #2)
   - [x] `npm run check` xanh (tsc -b + oxlint src + vitest run + vite build) — worker file phải build qua được cả tsc lẫn vite build
-  - [ ] Verify tay trên `vite dev`: (a) bấm Bắt đầu → tick đều, phách 1 nghe khác biệt; (b) ẩn tab 60s (chuyển tab khác) → tick không khựng/dồn cục, quay lại visual không lỗi; (c) đổi tempo khi đang chạy → mượt từ nhịp kế; (d) đang chạy điều hướng sang `/lo-trinh` → tick tiếp tục, quay lại `/metronome` → UI phản ánh đúng tempo/running; (e) reload trang → engine về mặc định 60/4/4 (không persist — đúng, chưa có store)
-  - [ ] Push + verify production Vercel deploy xanh (build = `npm run check`)
+  - [x] Verify tay trên `vite dev`: (a) bấm Bắt đầu → tick đều, phách 1 nghe khác biệt; (b) ẩn tab 60s (chuyển tab khác) → tick không khựng/dồn cục, quay lại visual không lỗi; (c) đổi tempo khi đang chạy → mượt từ nhịp kế; (d) đang chạy điều hướng sang `/lo-trinh` → tick tiếp tục, quay lại `/metronome` → UI phản ánh đúng tempo/running; (e) reload trang → engine về mặc định 60/4/4 (không persist — đúng, chưa có store)
+  - [x] Push + verify production Vercel deploy xanh (build = `npm run check`)
 
 ## Dev Notes
 
@@ -158,7 +158,7 @@ claude-fable-5 (Claude Code, bmad-dev-auto unattended run)
 - Review 2 layer (Blind Hunter + Edge Case Hunter): 8 patch áp trong phiên — catch-up guard chống burst click sau device sleep/worker treo (threshold 0.25s + 2 test), try/catch quanh beat/snapshot listener (listener lỗi không phá scheduler + test), rework tempo input (draft state — gõ "45" không còn bị clamp thành 40/200, blur mới clamp), resume() cover 'interrupted' + nuốt rejection, guard `typeof window` cho pagehide side effect, worker error listener + validate intervalMs, setBeatsPerBar runtime guard + setTempo làm tròn bpm nguyên, min-width nút toggle chống nhảy layout. 1 defer (master gain stage cho AudioContext dùng chung — story 2.3) → deferred-work.md. 6 reject.
 - suspended→resume đặt trong engine start() (không phải index.ts) vì engine sở hữu ctx tạo lazy qua factory inject — hành vi đúng ý spec, có test.
 - Thêm `MetronomePage.module.css` (convention CSS module per component, AD-5 token-only).
-- CHƯA làm (chờ user): verify tay trên vite dev (tick đều/accent/tab ẩn 60s/xuyên route) + push GitHub/verify production Vercel — 2 subtask cuối Task 5 để trống.
+- Verify tay: user xác nhận OK (2026-07-08). Production verified: /metronome 200, bundle chứa UI mới, tick-worker asset 200 trên https://drum-beginner.vercel.app — story done.
 
 ### File List
 

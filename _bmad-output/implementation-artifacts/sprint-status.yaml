@@ -51,7 +51,7 @@ development_status:
   # Epic 1: Luyện nhịp với Metronome
   epic-1: in-progress
   1-1-khung-du-an-design-tokens-nav-va-deploy: done
-  1-2-metronome-engine-nghe-duoc-nhip-chuan: review
+  1-2-metronome-engine-nghe-duoc-nhip-chuan: done
   1-3-metronome-block-hoan-chinh-trang-metronome-dung-duoc-that: backlog
   epic-1-retrospective: optional
 
