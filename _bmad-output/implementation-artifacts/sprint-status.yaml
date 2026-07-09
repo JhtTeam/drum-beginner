@@ -58,7 +58,7 @@ development_status:
   # Epic 2: Học theo lộ trình Giai đoạn 1
   epic-2: in-progress
   2-1-giao-trinh-giai-doan-1-trang-lo-trinh-trang-bai-hoc: done
-  2-2-video-youtube-trong-bai-hoc: ready-for-dev
+  2-2-video-youtube-trong-bai-hoc: done
   2-3-so-do-bo-trong-tuong-tac: backlog
   2-4-khoi-luyen-tap-stick-control-trong-bai: backlog
   epic-2-retrospective: optional
