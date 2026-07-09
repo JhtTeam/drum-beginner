@@ -61,8 +61,16 @@
 }
 
 .cardTitle {
+  flex: 1;
   font-size: var(--font-size-body);
   line-height: var(--line-height-body);
+}
+
+/* Checkmark bài đã hoàn thành — màu success, đứng trước tiêu đề (UX-DR11: kèm ký tự ✓). */
+.doneMark {
+  flex-shrink: 0;
+  color: var(--checklist-item-done-icon-color);
+  font-weight: var(--font-weight-h2);
 }
 
 /* UX-DR11: badge là chữ, không truyền nghĩa bằng màu đơn thuần */

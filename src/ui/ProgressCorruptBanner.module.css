@@ -1,0 +1,47 @@
+/* Banner corrupt — token-only (AD-5). Nền cảnh báo nhẹ, không chặn nội dung. */
+.banner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--card-radius);
+}
+
+.message {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-secondary);
+}
+
+.hint a {
+  color: var(--color-amber);
+}
+
+.resetButton {
+  align-self: flex-start;
+  height: var(--button-secondary-height);
+  padding: 0 var(--spacing-4);
+  background: var(--button-secondary-background);
+  color: var(--button-secondary-color);
+  border: var(--button-secondary-border);
+  border-radius: var(--button-secondary-radius);
+  font-size: var(--font-size-body);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.resetButton:hover {
+  border-color: var(--color-amber);
+}

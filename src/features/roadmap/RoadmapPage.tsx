@@ -4,9 +4,13 @@ import { Link } from 'react-router'
 import { lessonPath } from '../../app/routes'
 import { LESSON_KIND_LABEL } from '../../core/types'
 import { getPhases } from '../../content'
+import { useProgress } from '../../ui/useProgress'
 import styles from './RoadmapPage.module.css'
 
 export function RoadmapPage() {
+  // Snapshot phản ứng: bấm hoàn thành ở LessonPage → checkmark hiện ngay khi quay lại.
+  const { data } = useProgress()
+
   return (
     <div className={styles.page}>
       <h1>Lộ trình</h1>
@@ -20,17 +24,26 @@ export function RoadmapPage() {
                 Tuần {week.weekNumber} — {week.title}
               </h3>
               <ol className={styles.itemList}>
-                {week.items.map((item) => (
-                  <li key={item.id}>
-                    {/* AD-6: link qua lessonPath(), không tự ghép chuỗi path */}
-                    <Link to={lessonPath(item.id)} className={styles.card}>
-                      <span className={styles.cardTitle}>{item.title}</span>
-                      <span className={styles.kindBadge}>
-                        {LESSON_KIND_LABEL[item.kind]}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
+                {week.items.map((item) => {
+                  const done = Object.hasOwn(data.completedLessons, item.id)
+                  return (
+                    <li key={item.id}>
+                      {/* AD-6: link qua lessonPath(), không tự ghép chuỗi path */}
+                      <Link to={lessonPath(item.id)} className={styles.card}>
+                        {/* Checkmark có aria-label — trạng thái không chỉ bằng màu (UX-DR11) */}
+                        {done && (
+                          <span className={styles.doneMark} aria-label="Đã hoàn thành" role="img">
+                            ✓
+                          </span>
+                        )}
+                        <span className={styles.cardTitle}>{item.title}</span>
+                        <span className={styles.kindBadge}>
+                          {LESSON_KIND_LABEL[item.kind]}
+                        </span>
+                      </Link>
+                    </li>
+                  )
+                })}
               </ol>
             </section>
           ))}

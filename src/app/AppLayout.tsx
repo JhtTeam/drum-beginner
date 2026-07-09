@@ -1,4 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router'
+import { ProgressCorruptBanner } from '../ui/ProgressCorruptBanner'
 import styles from './AppLayout.module.css'
 import { ROUTES, activeNavPath } from './routes'
 
@@ -30,6 +31,7 @@ export function AppLayout() {
         </div>
       </nav>
       <main className={styles.main}>
+        <ProgressCorruptBanner />
         <Outlet />
       </main>
     </div>

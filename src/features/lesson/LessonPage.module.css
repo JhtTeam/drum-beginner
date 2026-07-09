@@ -75,6 +75,55 @@
   gap: var(--spacing-6);
 }
 
+/* Story 3.1: khối hoàn thành bài */
+.completion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.completeButton {
+  align-self: flex-start;
+  height: var(--button-primary-height);
+  padding: 0 var(--spacing-8);
+  background: var(--button-primary-background);
+  color: var(--button-primary-color);
+  border: none;
+  border-radius: var(--button-primary-radius);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-h2);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.completeButton:hover {
+  background: var(--button-primary-hover-background);
+}
+
+/* Đã hoàn thành → dùng màu success để phản hồi trạng thái (kèm chữ "✓", không chỉ màu). */
+.completeButton[aria-pressed='true'] {
+  background: var(--color-success);
+}
+
+.saveError {
+  margin: 0;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-danger);
+}
+
+.nextHint {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+}
+
+.nextHint a {
+  color: var(--color-amber);
+}
+
 .notFound {
   display: flex;
   flex-direction: column;
