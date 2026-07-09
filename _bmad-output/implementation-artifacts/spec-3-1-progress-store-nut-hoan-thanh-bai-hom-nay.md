@@ -6,6 +6,7 @@ status: 'done'
 baseline_revision: 'd9f17c974914459dd860fa0862268ff4de8dfe56'
 review_loop_iteration: 0
 followup_review_recommended: false
+final_revision: '698a9f3cb4e68022360ffa8007bb2012100ad514'
 context:
   - '{project-root}/_bmad-output/planning-artifacts/architecture/architecture-drum-beginner-2026-07-08/ARCHITECTURE-SPINE.md'
 warnings: [oversized]
