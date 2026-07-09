@@ -2,7 +2,7 @@
 // getPhases/getWeeks/getItemById, không tự duyệt cây.
 // FR-2/SM-3: thêm giai đoạn mới = import phase mới + thêm vào registry, hết.
 // AD-1: file này chỉ import từ core/ và content/ — không React/app/ui/features.
-import type { LessonItem, Phase, Week } from '../core/types'
+import type { LessonItem, LessonItemId, Phase, Week } from '../core/types'
 import { phase1 } from './phase-1'
 
 const phases: readonly Phase[] = [phase1]
@@ -41,4 +41,23 @@ export function getWeeks(phaseId: string): readonly Week[] {
 
 export function getItemById(id: string): LessonItemLocation | undefined {
   return itemLocationById.get(id)
+}
+
+// NGUỒN DUY NHẤT của "thứ tự bài" toàn lộ trình (AD-2) — feature truyền list này
+// vào selector getNextItem (AD-4), không tự duyệt cây. Map giữ insertion order
+// theo đúng vòng lặp phase → week → item ở trên.
+const orderedItemIds: readonly LessonItemId[] = [...itemLocationById.keys()]
+
+export function getOrderedItemIds(): LessonItemId[] {
+  return [...orderedItemIds]
+}
+
+// Id các item của một tuần (theo phase + weekNumber) — nguồn duyệt cây duy nhất
+// (AD-2): feature truyền list này vào getWeekProgress thay vì tự duyệt getWeeks.
+export function getWeekItemIds(phaseId: string, weekNumber: number): LessonItemId[] {
+  return (
+    getWeeks(phaseId)
+      .find((week) => week.weekNumber === weekNumber)
+      ?.items.map((item) => item.id) ?? []
+  )
 }

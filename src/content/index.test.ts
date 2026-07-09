@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getItemById, getPhases, getWeeks } from './index'
+import { getItemById, getOrderedItemIds, getPhases, getWeeks } from './index'
 
 describe('getPhases / getWeeks (AD-2, FR-1)', () => {
   it('có phase gd1 với đúng 3 tuần đánh số 1..3, tuần nào cũng có bài', () => {
@@ -86,6 +86,19 @@ describe('getItemById (AD-2 — feature không tự duyệt cây)', () => {
       ),
     )
     expect(withDrumMap.map((item) => item.id)).toEqual(['gd1-t1-b1'])
+  })
+})
+
+describe('getOrderedItemIds (story 3.2 — nguồn duy nhất thứ tự lộ trình)', () => {
+  it('trả đúng số lượng và đúng thứ tự duyệt phase → week → item', () => {
+    const expected = getPhases().flatMap((phase) =>
+      phase.weeks.flatMap((week) => week.items.map((item) => item.id)),
+    )
+    expect(getOrderedItemIds()).toEqual(expected)
+  })
+
+  it('item đầu tiên là bài mở đầu lộ trình gd1-t1-b1', () => {
+    expect(getOrderedItemIds()[0]).toBe('gd1-t1-b1')
   })
 })
 

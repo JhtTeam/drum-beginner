@@ -106,6 +106,37 @@
   background: var(--color-success);
 }
 
+/* Khoảnh khắc "Xong Tuần N 🎉" (story 3.2) — base state luôn hiện chữ + màu,
+   KHÔNG phụ thuộc motion (UX-DR2: reduced-motion vẫn thấy thông điệp).
+   Scope .completion để thắng specificity của `.article p` (0-1-1) phía trên. */
+.completion .weekDone {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-h2);
+  color: var(--color-success);
+}
+
+/* Nảy nhẹ MỘT LẦN chỉ khi người dùng không giảm chuyển động (UX-DR9/DR2 —
+   mirror pattern MetronomeBlock .dotActive). */
+@media (prefers-reduced-motion: no-preference) {
+  .completion .weekDone {
+    animation: weekDonePop 0.5s ease-in-out 1;
+  }
+
+  @keyframes weekDonePop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
 .saveError {
   margin: 0;
   font-size: var(--font-size-small);

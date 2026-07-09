@@ -3,18 +3,16 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ROUTES, lessonPath } from '../../app/routes'
 import { LESSON_KIND_LABEL } from '../../core/types'
-import { progress, getNextItem } from '../../core/progress'
-import { getItemById, getPhases } from '../../content'
+import { progress, getNextItem, getWeekProgress } from '../../core/progress'
+import { getItemById, getOrderedItemIds, getWeekItemIds } from '../../content'
 import { DrumMap } from '../../ui/DrumMap'
 import { PracticeBlock } from '../../ui/PracticeBlock'
 import { VideoEmbed } from '../../ui/VideoEmbed'
 import { useProgress } from '../../ui/useProgress'
 import styles from './LessonPage.module.css'
 
-// Thứ tự id toàn lộ trình cho "bài kế tiếp" (AD-4 selector) — build một lần lúc module init.
-const orderedItemIds = getPhases().flatMap((phase) =>
-  phase.weeks.flatMap((week) => week.items.map((item) => item.id)),
-)
+// Thứ tự id toàn lộ trình cho "bài kế tiếp" (AD-4 selector) — nguồn duy nhất từ content (AD-2).
+const orderedItemIds = getOrderedItemIds()
 
 export function LessonPage() {
   const { id } = useParams()
@@ -26,10 +24,14 @@ export function LessonPage() {
   const { data } = useProgress()
   // Toast "write-failed" tạm thời (role=status) — corrupt dựa banner toàn cục.
   const [saveError, setSaveError] = useState(false)
+  // Khoảnh khắc "Xong Tuần N 🎉" (story 3.2, UX-DR9) — transient, chỉ fire trên
+  // transition bài cuối tuần vừa được đánh dấu, không fire khi hoàn thành lại.
+  const [weekDone, setWeekDone] = useState<number | null>(null)
 
-  // Đổi bài (id đổi, KHÔNG remount) → dọn toast của bài cũ.
+  // Đổi bài (id đổi, KHÔNG remount) → dọn toast/khoảnh khắc của bài cũ.
   useEffect(() => {
     setSaveError(false)
+    setWeekDone(null)
   }, [id])
 
   // Toast tự tắt sau vài giây — nhẹ, không chặn (EXPERIENCE State Patterns).
@@ -38,6 +40,13 @@ export function LessonPage() {
     const timer = setTimeout(() => setSaveError(false), 4000)
     return () => clearTimeout(timer)
   }, [saveError])
+
+  // Khoảnh khắc tuần xong tự ẩn — MỘT LẦN, không confetti kéo dài (UX-DR9).
+  useEffect(() => {
+    if (weekDone === null) return
+    const timer = setTimeout(() => setWeekDone(null), 4000)
+    return () => clearTimeout(timer)
+  }, [weekDone])
 
   // AC #2: MỘT kiểu 404 nội dung duy nhất — in-page, không redirect, không throw
   if (!found) {
@@ -58,10 +67,26 @@ export function LessonPage() {
   const nextItem = nextItemId ? getItemById(nextItemId) : undefined
 
   const handleComplete = () => {
+    // Chụp TRƯỚC khi ghi (snapshot render hiện tại): khoảnh khắc "Xong Tuần N" chỉ
+    // fire trên transition — hoàn thành LẠI bài đã xong không kích hoạt lại (AC #3).
+    const wasCompleted = Object.hasOwn(data.completedLessons, item.id)
     // AD-6/AD-4: id là khóa progress; ngày lưu UTC toISOString(), streak quy ngày local ở selector.
     const result = progress.completeLesson(item.id, new Date().toISOString())
     if (result.ok) {
       setSaveError(false)
+      if (!wasCompleted) {
+        // Đọc snapshot MỚI (completeLesson emit đồng bộ) — data của render chưa gồm
+        // item vừa xong. Tuần xong = mọi item của tuần đã có trong completedLessons.
+        const completedLessons = progress.getSnapshot().data.completedLessons
+        const weekItemIds = getWeekItemIds(found.phaseId, weekNumber)
+        const { done, total } = getWeekProgress(completedLessons, weekItemIds)
+        // KHÔNG hiện "Xong Tuần N" khi vừa hoàn thành hết lộ trình — thông điệp
+        // "hoàn thành hết lộ trình 🎉" (nhánh nextItem undefined) đủ mạnh, tránh 2 🎉 chồng.
+        const roadmapDone = getNextItem(completedLessons, orderedItemIds) === undefined
+        if (total > 0 && done === total && !roadmapDone) {
+          setWeekDone(weekNumber)
+        }
+      }
     } else if (result.reason === 'write-failed') {
       // KHÔNG auto-navigate; nút bấm lại được.
       setSaveError(true)
@@ -153,6 +178,13 @@ export function LessonPage() {
         >
           {isCompleted ? 'Đã hoàn thành ✓' : '✓ Hoàn thành bài hôm nay'}
         </button>
+
+        {/* Khoảnh khắc "Xong Tuần N 🎉" — một lần, nảy nhẹ gated reduced-motion (UX-DR9/DR2). */}
+        {weekDone !== null && (
+          <p role="status" className={styles.weekDone}>
+            Xong Tuần {weekDone} 🎉
+          </p>
+        )}
 
         {/* Toast nhẹ, không chặn — nút vẫn bấm lại được (AC #2). */}
         {saveError && (
