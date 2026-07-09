@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router'
 import { ROUTES } from '../../app/routes'
 import { LESSON_KIND_LABEL } from '../../core/types'
 import { getItemById } from '../../content'
+import { DrumMap } from '../../ui/DrumMap'
 import { VideoEmbed } from '../../ui/VideoEmbed'
 import styles from './LessonPage.module.css'
 
@@ -52,7 +53,16 @@ export function LessonPage() {
         ))}
       </section>
 
-      {/* FR-4: thứ tự mục tiêu → lý thuyết → video → thực hành.
+      {/* FR-6/KF-2: sơ đồ bộ trống GIỮA lý thuyết và video — đọc lý thuyết →
+          khám phá sơ đồ → xem video. Guard interactive — 12 bài còn lại không có section. */}
+      {item.interactive === 'drum-map' && (
+        <section>
+          <h2 className={styles.sectionTitle}>Sơ đồ bộ trống</h2>
+          <DrumMap />
+        </section>
+      )}
+
+      {/* FR-4/KF-2: thứ tự mục tiêu → lý thuyết → sơ đồ (nếu có) → video → thực hành.
           Guard videos.length > 0 — bài không video KHÔNG có section rỗng. */}
       {item.videos.length > 0 && (
         <section>

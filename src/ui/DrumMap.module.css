@@ -1,0 +1,104 @@
+/*
+ * DrumMap — token-only (AD-5), dùng đủ 6 token --drum-map-* + --card-*.
+ * KHÔNG override outline: focus ring do global.css sở hữu (:focus-visible universal
+ * áp cả phần tử SVG có tabindex). Hover/active CHỈ đổi màu — không scale/animation,
+ * tự thỏa prefers-reduced-motion (UX-DR2).
+ */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* UX-DR7: desktop panel bên phải sơ đồ (grid 2 cột), mobile xuống dưới —
+   media query layout được phép trong module (precedent MetronomeBlock) */
+@media (width >= 768px) {
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* Co theo cột bài viết — không tràn ngang ở 375px */
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.region {
+  cursor: pointer;
+}
+
+.shape {
+  fill: var(--drum-map-region-fill);
+  stroke: var(--drum-map-region-stroke);
+  stroke-width: 2;
+}
+
+/* Chân/stand gợi hình — line mảnh, không đổi màu theo hover/active */
+.stand {
+  stroke: var(--drum-map-region-stroke);
+  stroke-width: 2;
+}
+
+/* AC #2: hover CHỈ viền đổi amber — không phát âm (handler âm chỉ ở click/keydown).
+   Bọc (hover: hover): thiết bị cảm ứng không có hover thật — :hover dính sau tap
+   sẽ làm vùng chạm trước đó sáng viền cạnh vùng active, gây nhiễu. */
+@media (hover: hover) {
+  .region:hover .shape {
+    stroke: var(--drum-map-region-hover-stroke);
+  }
+}
+
+/* AC #1: vùng active fill amber-dim + viền amber-bright.
+   Đặt SAU rule hover — active thắng khi vừa hover vừa active. */
+.region.active .shape {
+  fill: var(--drum-map-region-active-fill);
+  stroke: var(--drum-map-region-active-stroke);
+}
+
+/* UX-DR2: hit-area trong suốt cho vùng dẹt — fill transparent VẪN nhận
+   pointer events (fill: none thì không), mắt không thấy */
+.hitArea {
+  fill: transparent;
+  stroke: none;
+}
+
+.label {
+  fill: var(--drum-map-label-color);
+  font-weight: var(--font-weight-h2);
+  pointer-events: none;
+}
+
+/* Panel tên + vai trò — style card (--card-*) */
+.panel {
+  background: var(--card-background);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+}
+
+/* Selector 2 class: thắng rule `.article p` (0,1,1) của trang chứa — precedent VideoEmbed */
+.panel .hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.panel .partLabel {
+  margin: 0 0 var(--spacing-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-h2);
+  line-height: var(--line-height-body);
+}
+
+.panel .partRole {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}

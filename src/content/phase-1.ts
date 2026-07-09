@@ -12,9 +12,10 @@ export const phase1: Phase = {
       title: 'Làm quen & nhịp đầu tiên',
       items: [
         {
-          // Anchor KF-2: bài mở đầu cố định — story 2.3 gắn DrumMap vào đúng bài này.
+          // FR-6/KF-2: bài mở đầu cố định — bài DUY NHẤT có sơ đồ bộ trống tương tác.
           id: 'gd1-t1-b1',
           kind: 'theory',
+          interactive: 'drum-map',
           title: 'Làm quen bộ trống',
           objective:
             'Bạn gọi tên được 6 bộ phận chính của bộ trống và biết mỗi bộ phận dùng để làm gì.',

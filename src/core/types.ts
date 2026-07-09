@@ -29,6 +29,9 @@ interface LessonItemBase {
   theory: string[]
   practiceSteps: string[]
   videos: Video[]
+  // FR-6: widget tương tác gắn theo bài (content-as-data AD-2) — union chữ,
+  // mở rộng widget sau này chỉ thêm nhánh, không sửa component ngoài LessonPage.
+  interactive?: 'drum-map'
 }
 
 // Discriminated union theo `kind` — exercise BẮT BUỘC có embed, theory thì

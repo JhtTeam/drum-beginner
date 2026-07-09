@@ -77,6 +77,16 @@ describe('getItemById (AD-2 — feature không tự duyệt cây)', () => {
     expect(found?.item.kind).toBe('theory')
     expect(found?.item.title).toBe('Làm quen bộ trống')
   })
+
+  // FR-6: chốt hợp đồng data chống gắn nhầm bài — DrumMap chỉ sống ở bài mở đầu
+  it("đúng MỘT item có interactive 'drum-map' trên toàn phase, và đó là gd1-t1-b1", () => {
+    const withDrumMap = getPhases().flatMap((phase) =>
+      phase.weeks.flatMap((week) =>
+        week.items.filter((item) => item.interactive === 'drum-map'),
+      ),
+    )
+    expect(withDrumMap.map((item) => item.id)).toEqual(['gd1-t1-b1'])
+  })
 })
 
 describe('video data (FR-5, AR-7 — addendum B)', () => {
