@@ -2,8 +2,9 @@
 title: 'Story 2.1: Phase 1 curriculum data + Roadmap page + Lesson page'
 type: 'feature'
 created: '2026-07-09'
-status: 'in-review'
+status: 'done'
 baseline_revision: '0372126d8399862554382545b67e0eac0b4272d3'
+final_revision: '06f60142f941684d317669adc59f973bc1fccbfb'
 review_loop_iteration: 0
 followup_review_recommended: false
 context:
@@ -113,3 +114,25 @@ Rejected as noise (spec-conformant or speculative): registry init-throw for dupl
 
 **Manual checks (if no CLI):**
 - `vite dev`: `/lo-trinh` 3 tuần + cards; card click → lesson; deep-link `/bai-hoc/gd1-t1-b1` works; `/bai-hoc/khong-ton-tai` → in-page 404 + link back; nav "Lộ trình" active on lesson pages; 375px single-column, targets ≥44px, no horizontal scroll; Tab reaches every card with visible focus ring
+
+## Auto Run Result
+
+**Status:** done — final_revision `06f6014`
+
+**Summary:** Story 2.1 delivered the content-as-data foundation and the first two course pages. `core/types.ts` defines the full domain model (LessonItem as a discriminated union on `kind`, Video as a union on `lang` with required English notes); `content/phase-1.ts` ships the complete Vietnamese Phase 1 curriculum (13 items over 3 weeks, all 4 PRD topics, exercise embeds for single/double stroke and paradiddle); `content/index.ts` provides the registry + O(1) lookup API. `/lo-trinh` renders weeks of card links and `/bai-hoc/:id` renders the lesson article with breadcrumb and a single in-page content-404.
+
+**Files changed:**
+- `../../src/core/types.ts` — NEW: domain types + LESSON_KIND_LABEL, framework-free
+- `../../src/content/phase-1.ts` — NEW: GĐ1 curriculum data (replaces `.gitkeep`)
+- `../../src/content/index.ts` — NEW: phase registry + getPhases/getWeeks/getItemById
+- `../../src/content/index.test.ts` — NEW: 10 content-API tests (red-green)
+- `../../src/features/roadmap/RoadmapPage.tsx` + `RoadmapPage.module.css` — stub → card list from getPhases()
+- `../../src/features/lesson/LessonPage.tsx` + `LessonPage.module.css` — stub → lesson article + in-page 404
+
+**Review findings breakdown:** 7 patches applied (all low: LessonItem discriminated union, extensible test regex, phase-id uniqueness test, index React keys, week heading h3, `satisfies` label typing, removed brittle id parsing); 0 deferred; 12 rejected as noise.
+
+**Follow-up review:** not recommended — all review-driven changes were localized, low-consequence type/test/markup hygiene with no behavior change.
+
+**Verification:** `npm run check` fully green after patches — tsc -b, oxlint, vitest `4 files / 70 tests passed` (60 pre-existing + 10 new), vite build OK. Structural AC #3 check: `gd1` appears only in `content/` and tests (grep-verified). Forbidden paths (`src/core/audio/`, `src/app/`, `src/ui/`, `src/styles/`, configs) untouched (git-verified).
+
+**Residual risks:** Lesson/roadmap rendering has no component-level tests (project has no jsdom/@testing-library by design); visual/manual checks (375px layout, keyboard traversal, Vercel deploy) not exercised in this unattended run — recommend a quick human smoke pass on the deployed roadmap and one lesson page. Sprint-status.yaml not updated by this workflow (story 1-3 entry there is also stale at `review` though its spec is `done`).
