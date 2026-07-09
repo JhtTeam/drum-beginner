@@ -1,0 +1,132 @@
+/*
+ * VideoEmbed — token-only (AD-5), dùng đủ 6 token --video-embed-* có sẵn.
+ * KHÔNG override outline (focus ring do global.css sở hữu); hover chỉ đổi màu viền.
+ * Không media query riêng — khung co theo cột bài viết (max-width 65ch có sẵn).
+ */
+.embed {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+/* Khung 16:9 giữ nguyên ở MỌI trạng thái (idle/playing/thumbError) — không sập layout */
+.frame {
+  position: relative;
+  aspect-ratio: var(--video-embed-aspect-ratio);
+  background: var(--video-embed-background);
+  border: var(--video-embed-border);
+  border-radius: var(--video-embed-radius);
+  overflow: hidden;
+}
+
+/* UX-DR11: nút play phủ toàn khung — touch target chắc chắn ≥44px */
+.playButton {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.frame:hover {
+  /* Hover chỉ đổi màu viền — không animation trang trí (AD-5) */
+  border-color: var(--color-amber);
+}
+
+.thumbnail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playIcon {
+  position: relative;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+}
+
+/* UX-DR11: badge VI/EN là chữ, nền amber chữ tối (UX-DR6) */
+.badge {
+  position: absolute;
+  top: var(--spacing-2);
+  left: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--video-embed-badge-background);
+  color: var(--video-embed-badge-color);
+  border-radius: var(--rounded-sm);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-h2);
+  line-height: var(--line-height-small);
+}
+
+.iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* UX-DR9: fallback cùng khung 16:9 — không bao giờ khung xám trống */
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  text-align: center;
+}
+
+/* Selector 2 class: thắng rule `.article p` của trang chứa (0,1,1) — giữ đúng kiểu chữ */
+.fallback .fallbackMessage {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+/* Selector 2 class: thắng rule `.article p` của trang chứa (0,1,1) — title đúng small/secondary */
+.caption .title {
+  margin: 0;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-secondary);
+}
+
+/* Note tóm tắt tiếng Việt — viền trái amber-dim, vai "vùng nhấn tĩnh cường độ thấp" */
+.caption .note {
+  margin: 0;
+  padding-left: var(--spacing-3);
+  border-left: 2px solid var(--color-amber-dim);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-secondary);
+}
+
+.searchLink {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-secondary);
+}
+
+.searchLink:hover {
+  color: var(--color-text-primary);
+}

@@ -68,6 +68,13 @@
   line-height: var(--line-height-body);
 }
 
+/* Danh sách video — khoảng cách giữa các khung (story 2.2) */
+.videoList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
 .notFound {
   display: flex;
   flex-direction: column;

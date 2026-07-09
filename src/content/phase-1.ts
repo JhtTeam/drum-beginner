@@ -1,6 +1,5 @@
 // Giáo trình Giai đoạn 1 — dữ liệu thuần (AD-2), chỉ import từ core (AD-1).
 // AD-4: các id gd1-t{w}-b{n} là khóa progress vĩnh viễn — KHÔNG đổi/đánh số lại.
-// videos: [] toàn bộ story này — dữ liệu video vào ở story 2.2.
 // NFR-1: thuật ngữ trống giữ tiếng Anh, chú thích tiếng Việt lần đầu mỗi bài.
 import type { Phase } from '../core/types'
 
@@ -31,7 +30,29 @@ export const phase1: Phase = {
             'Gõ nhẹ thử từng bộ phận (nếu có trống) và lắng nghe sự khác nhau giữa các âm thanh.',
             'Tự kiểm: che bài học lại và kể đủ 6 cái tên. Thiếu cái nào thì nhìn lại một lần nữa — vậy là xong buổi đầu!',
           ],
-          videos: [],
+          // FR-5: video addendum B — thứ tự mảng = thứ tự hiển thị, VI trước EN (UX-DR6)
+          videos: [
+            {
+              youtubeId: 'VI70TWXRKLM',
+              lang: 'vi',
+              title: 'Tìm hiểu các bộ phận và tiếng trong 1 bộ trống — Việt Thương Music',
+            },
+            {
+              youtubeId: '-W9qhBrw2Lk',
+              lang: 'vi',
+              title: 'Học trống - Thành phần của một bộ trống — Soul Institute of Arts',
+            },
+            {
+              youtubeId: 'Doxa4nYB4yo',
+              lang: 'vi',
+              title: 'Trống Jazz - Cấu tạo, tính năng từng bộ phận — Trung Drum',
+            },
+            {
+              youtubeId: 'LYNnF7iUE8U',
+              lang: 'vi',
+              title: 'Học TRỐNG cơ bản Bài 1: Làm quen với trống — Pong Ơi',
+            },
+          ],
         },
         {
           id: 'gd1-t1-b2',
@@ -52,7 +73,24 @@ export const phase1: Phase = {
             'Đánh 20 nhát chậm rãi tay phải rồi 20 nhát tay trái, chỉ để ý cảm giác cầm dùi — chưa cần nhịp.',
             'Soi gương hoặc quay video 30 giây để kiểm tra: vai có nhô lên không, cổ tay có cứng không.',
           ],
-          videos: [],
+          videos: [
+            {
+              youtubeId: 'Zvgpjio8n4c',
+              lang: 'vi',
+              title: 'Hướng dẫn đánh trống cơ bản: Cách cầm dùi trống — Việt Thương Music',
+            },
+            {
+              youtubeId: 'h8rWFXOoSEc',
+              lang: 'vi',
+              title:
+                'Học trống căn bản Bài 2 - Tư Thế Ngồi, Cách Cầm Dùi Và Setup Bộ Trống — Tran Tin Drummer',
+            },
+            {
+              youtubeId: 'mTkuxDQEnk4',
+              lang: 'vi',
+              title: 'Hướng dẫn tự học trống: Bài 2 - Cách cầm dùi — Duy Phan',
+            },
+          ],
         },
         {
           id: 'gd1-t1-b3',
@@ -73,7 +111,27 @@ export const phase1: Phase = {
             'Thử dậm chân phải theo tick 1 phút (làm quen dần với chân kick sau này).',
             'Nghỉ 1 phút rồi lặp lại cả chuỗi 2 lần nữa. Tổng cộng chỉ khoảng 10 phút thôi.',
           ],
-          videos: [],
+          // AR-7: video en BẮT BUỘC có note tóm tắt tiếng Việt (ép ở compile time)
+          videos: [
+            {
+              youtubeId: '8bcNVm9tut8',
+              lang: 'vi',
+              title:
+                'Bài 5: Bí mật làm chủ nhịp điệu trống: Tempo & Metronome cho người mới — GIAO DRUM',
+            },
+            {
+              youtubeId: 'qc7wPNHCFnU',
+              lang: 'en',
+              title: 'Playing Drums To A Metronome — Drum Beats Online',
+              note: 'Video tiếng Anh về cách tập trống cùng metronome — bạn chỉ cần nhìn động tác và cách anh ấy đếm nhịp là đủ, không cần hiểu hết lời.',
+            },
+            {
+              youtubeId: 'gSmf7W3DUjs',
+              lang: 'en',
+              title: '60 BPM Metronome (click track luyện tập) — Drumset Fundamentals',
+              note: 'Track metronome 60 bpm dài 30 phút, không lời — bạn bật lên tập cùng khi muốn đổi vị tiếng tick.',
+            },
+          ],
         },
         {
           id: 'gd1-t1-b4',
@@ -93,7 +151,13 @@ export const phase1: Phase = {
             'Lặp lại 5 hiệp 1 phút. Nếu lệch nhịp, dừng hẳn rồi vào lại từ đầu hiệp — đừng cố đuổi theo tick.',
             'Kết thúc bằng 1 hiệp nhắm mắt đánh, chỉ dựa vào tai.',
           ],
-          videos: [],
+          videos: [
+            {
+              youtubeId: 'IpXHV9CUvho',
+              lang: 'vi',
+              title: 'Học Trống cơ bản Bài 2: Bài tập tay cơ bản (Single Stroke) — Pong Ơi',
+            },
+          ],
           exercise: {
             pattern: ['R', 'L', 'R', 'L'],
             targetTempo: { from: 60, to: 65 },
@@ -178,7 +242,13 @@ export const phase1: Phase = {
             'Lặp lại 4 hiệp 1 phút, mỗi hiệp tập trung nghe một tay.',
             'Chốt buổi bằng 1 phút single stroke ở 60 bpm để cảm nhận sự khác nhau giữa hai rudiment.',
           ],
-          videos: [],
+          videos: [
+            {
+              youtubeId: '_wYDJjCFtNY',
+              lang: 'vi',
+              title: 'Học TRỐNG cơ bản Bài 3: Bài tập tay cơ bản (Double Stroke) — Pong Ơi',
+            },
+          ],
           exercise: {
             pattern: ['R', 'R', 'L', 'L'],
             targetTempo: { from: 60, to: 65 },
@@ -272,7 +342,19 @@ export const phase1: Phase = {
             'Chú ý riêng nhát kép (R R và L L): hai nhát phải to đều như bạn đã tập ở double stroke.',
             'Chốt buổi: 1 phút cuối nhắm mắt, chỉ dựa vào tai và trí nhớ của tay.',
           ],
-          videos: [],
+          videos: [
+            {
+              youtubeId: 'nRJBK5_o5SM',
+              lang: 'vi',
+              title: 'Tự học trống: Paradiddle — Duy Phan',
+            },
+            {
+              youtubeId: 'h0OoVP6VgBE',
+              lang: 'en',
+              title: 'How To Play A Paradiddle — Drum Rudiment Lesson — Drumeo',
+              note: 'Video 1 phút của Drumeo: bạn nhìn rõ thứ tự tay R-L-R-R L-R-L-L đánh thật chậm — xem động tác là đủ, không cần nghe hiểu.',
+            },
+          ],
           exercise: {
             pattern: ['R', 'L', 'R', 'R', 'L', 'R', 'L', 'L'],
             targetTempo: { from: 60, to: 65 },

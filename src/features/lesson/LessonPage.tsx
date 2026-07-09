@@ -1,9 +1,10 @@
 // Trang Bài học (FR-4) — render từ getItemById (AD-2), không tự duyệt cây.
-// Story này KHÔNG render videos (2.2) / pattern-tempo-MetronomeBlock (2.4).
+// Story này KHÔNG render pattern-tempo-MetronomeBlock (2.4).
 import { Link, useParams } from 'react-router'
 import { ROUTES } from '../../app/routes'
 import { LESSON_KIND_LABEL } from '../../core/types'
 import { getItemById } from '../../content'
+import { VideoEmbed } from '../../ui/VideoEmbed'
 import styles from './LessonPage.module.css'
 
 export function LessonPage() {
@@ -50,6 +51,20 @@ export function LessonPage() {
           <p key={index}>{paragraph}</p>
         ))}
       </section>
+
+      {/* FR-4: thứ tự mục tiêu → lý thuyết → video → thực hành.
+          Guard videos.length > 0 — bài không video KHÔNG có section rỗng. */}
+      {item.videos.length > 0 && (
+        <section>
+          <h2 className={styles.sectionTitle}>Video hướng dẫn</h2>
+          <div className={styles.videoList}>
+            {item.videos.map((video) => (
+              // key theo youtubeId — giá trị ổn định, không dùng index
+              <VideoEmbed key={video.youtubeId} video={video} searchQuery={item.title} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section>
         <h2 className={styles.sectionTitle}>Thực hành</h2>

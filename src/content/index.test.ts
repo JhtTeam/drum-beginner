@@ -79,6 +79,78 @@ describe('getItemById (AD-2 — feature không tự duyệt cây)', () => {
   })
 })
 
+describe('video data (FR-5, AR-7 — addendum B)', () => {
+  const allVideos = () =>
+    getPhases().flatMap((phase) =>
+      phase.weeks.flatMap((week) => week.items.flatMap((item) => item.videos)),
+    )
+
+  it('mọi youtubeId đúng dạng 11 ký tự [A-Za-z0-9_-]', () => {
+    for (const video of allVideos()) {
+      expect(video.youtubeId).toMatch(/^[A-Za-z0-9_-]{11}$/)
+    }
+  })
+
+  it('tổng số video toàn phase = 14 (addendum B chép nguyên văn)', () => {
+    expect(allVideos()).toHaveLength(14)
+  })
+
+  it('trong mỗi item, không video vi nào đứng SAU video en (component không sort — data phải đúng)', () => {
+    for (const phase of getPhases()) {
+      for (const week of phase.weeks) {
+        for (const item of week.items) {
+          const firstEn = item.videos.findIndex((video) => video.lang === 'en')
+          if (firstEn === -1) continue
+          for (const video of item.videos.slice(firstEn)) {
+            expect(video.lang).toBe('en')
+          }
+        }
+      }
+    }
+  })
+
+  it('mọi video en có note tiếng Việt không rỗng (AR-7 — test chốt chống sửa data ẩu)', () => {
+    for (const video of allVideos()) {
+      if (video.lang !== 'en') continue
+      expect(video.note.trim().length).toBeGreaterThan(0)
+    }
+  })
+
+  it('youtubeId không trùng trong cùng một item', () => {
+    for (const phase of getPhases()) {
+      for (const week of phase.weeks) {
+        for (const item of week.items) {
+          const ids = item.videos.map((video) => video.youtubeId)
+          expect(new Set(ids).size).toBe(ids.length)
+        }
+      }
+    }
+  })
+
+  it('anchors: số video từng bài khớp bảng mapping story 2.2', () => {
+    const expectedCounts: Record<string, number> = {
+      'gd1-t1-b1': 4,
+      'gd1-t1-b2': 3,
+      'gd1-t1-b3': 3,
+      'gd1-t1-b4': 1,
+      'gd1-t2-b2': 1,
+      'gd1-t3-b1': 2,
+    }
+    for (const [id, count] of Object.entries(expectedCounts)) {
+      expect(getItemById(id)?.item.videos, id).toHaveLength(count)
+    }
+  })
+
+  it('gd1-t1-b3 có 1 vi + 2 en, gd1-t3-b1 có 1 vi + 1 en', () => {
+    expect(getItemById('gd1-t1-b3')?.item.videos.map((video) => video.lang)).toEqual([
+      'vi',
+      'en',
+      'en',
+    ])
+    expect(getItemById('gd1-t3-b1')?.item.videos.map((video) => video.lang)).toEqual(['vi', 'en'])
+  })
+})
+
 describe('exercise embed (AD-2, FR-14)', () => {
   it('mọi item kind exercise có embed pattern không rỗng và 40 ≤ from ≤ to ≤ 200', () => {
     for (const phase of getPhases()) {
