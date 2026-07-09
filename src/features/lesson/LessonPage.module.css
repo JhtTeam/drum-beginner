@@ -1,0 +1,81 @@
+/* Trang Bài học — bố cục bài đọc một cột, token-only (AD-5).
+   Giới hạn ~65ch cho dòng chữ dễ đọc. */
+.article {
+  max-width: 65ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  padding-top: var(--spacing-6);
+}
+
+.breadcrumb {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-secondary);
+}
+
+.breadcrumb a {
+  color: var(--color-text-secondary);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-text-primary);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+}
+
+.header h1 {
+  margin: 0;
+}
+
+/* UX-DR11: badge là chữ, không truyền nghĩa bằng màu đơn thuần */
+.kindBadge {
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-surface-overlay);
+  border-radius: var(--rounded-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.sectionTitle {
+  margin: 0 0 var(--spacing-3);
+}
+
+.article p {
+  margin: 0 0 var(--spacing-3);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+.article p:last-child {
+  margin-bottom: 0;
+}
+
+.steps {
+  margin: 0;
+  padding-left: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding-top: var(--spacing-6);
+}
+
+.notFound h1,
+.notFound p {
+  margin: 0;
+}
