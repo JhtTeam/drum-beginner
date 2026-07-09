@@ -66,7 +66,7 @@ development_status:
   # Epic 3: Tiến độ, streak và trang chủ "Hôm nay"
   epic-3: in-progress
   3-1-progress-store-nut-hoan-thanh-bai-hom-nay: done
-  3-2-trang-chu-hom-nay-streak: backlog
+  3-2-trang-chu-hom-nay-streak: done
   3-3-trang-tien-do-ghi-tempo-tot-nhat: backlog
   3-4-export-import-tien-do: backlog
   epic-3-retrospective: optional
