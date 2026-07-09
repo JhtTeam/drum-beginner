@@ -49,15 +49,15 @@ story_location: "{project-root}/_bmad-output/implementation-artifacts"
 
 development_status:
   # Epic 1: Luyện nhịp với Metronome
-  epic-1: in-progress
+  epic-1: done
   1-1-khung-du-an-design-tokens-nav-va-deploy: done
   1-2-metronome-engine-nghe-duoc-nhip-chuan: done
-  1-3-metronome-block-hoan-chinh-trang-metronome-dung-duoc-that: review
+  1-3-metronome-block-hoan-chinh-trang-metronome-dung-duoc-that: done
   epic-1-retrospective: optional
 
   # Epic 2: Học theo lộ trình Giai đoạn 1
   epic-2: in-progress
-  2-1-giao-trinh-giai-doan-1-trang-lo-trinh-trang-bai-hoc: ready-for-dev
+  2-1-giao-trinh-giai-doan-1-trang-lo-trinh-trang-bai-hoc: done
   2-2-video-youtube-trong-bai-hoc: backlog
   2-3-so-do-bo-trong-tuong-tac: backlog
   2-4-khoi-luyen-tap-stick-control-trong-bai: backlog
