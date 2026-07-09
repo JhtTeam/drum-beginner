@@ -84,7 +84,10 @@ export function PracticeBlock({ exercise }: { exercise: ExerciseSpec }) {
         </div>
       </div>
       <aside className={styles.notes}>
-        <p className={styles.notesLabel}>💡 Ghi chú kỹ thuật</p>
+        <p className={styles.notesLabel}>
+          {/* Glyph trang trí — ẩn khỏi accessible name (nếp MetronomeBlock) */}
+          <span aria-hidden="true">💡</span> Ghi chú kỹ thuật
+        </p>
         <ul className={styles.notesList}>
           {/* Danh sách tĩnh từ content, không reorder — key theo index an toàn */}
           {exercise.techniqueNotes.map((note, index) => (

@@ -4,7 +4,7 @@ baseline_commit: 289d05d7c10efae804b7b878adf14b4d21c56b7c
 
 # Story 2.4: Khối luyện tập stick control trong bài
 
-Status: review
+Status: done
 
 ## Story
 
@@ -228,3 +228,14 @@ claude-fable-5 (Claude Fable 5)
 ## Change Log
 
 - 2026-07-09: Story 2.4 implement hoàn chỉnh — khối luyện tập stick control nhúng trong bài tập (PatternGrid + PracticeBlock ở ui/, con trỏ stateless theo beat event, mount rule AD-8, layout ≥60vh desktop / dock sticky mobile). 108 test xanh, verify runtime headless Chrome 18 check + 6 probe pass. Status → review.
+
+## Review Findings
+
+Code review 2026-07-09 (3 layer song song: Blind Hunter, Edge Case Hunter, Acceptance Auditor). 1 decision-needed, 1 patch, 2 defer, 3 dismissed.
+
+- [x] [Review][Defer] Đổi `beatsPerBar` giữa chừng làm con trỏ pattern nhảy ô — Picker số phách (2/3/4) của `MetronomeBlock` hiển thị ngay trong `PracticeBlock` (PracticeBlock.tsx:83). Công thức `patternIndexForBeat` nhân `beatsPerBar` HIỆN TẠI cho `(bar-1)`, nên khi user bấm đổi số phách giữa lúc chạy, con trỏ nhảy một offset (tự chỉnh đúng ngay sau đó — advance 1/beat liên tục; KHÔNG crash, KHÔNG NaN, index luôn trong dải). Grid cũng cứng 4 cột (PatternGrid.module.css:9) nên ánh xạ "1 hàng = 1 ô nhịp" vỡ khi beatsPerBar≠4. Cả Blind Hunter và Edge Case Hunter độc lập cùng flag. [blind+edge] [src/ui/pattern-cursor.ts:16, src/ui/PracticeBlock.tsx:48] — deferred (Anhndt, 2026-07-09): hành vi self-correcting, ngoài AC #2, đã ghi nhận & chấp nhận trong Dev Notes; đổi số phách giữa bài stick-control là thao tác hiếm, không crash — xem lại nếu có phản hồi UX thật.
+- [x] [Review][Patch] Emoji 💡 chưa `aria-hidden` — SR đọc "bóng đèn" trước nhãn "Ghi chú kỹ thuật"; lệch nếp repo (MetronomeBlock bọc mọi glyph trong `aria-hidden="true"`) [src/ui/PracticeBlock.tsx:87] — FIXED 2026-07-09: bọc `<span aria-hidden="true">💡</span>`.
+- [x] [Review][Defer] Logic stateful (timer bù delay / cleanup / mount rule / stop) không có test [src/ui/PracticeBlock.tsx:38-70] — deferred, pre-existing (env node không dựng DOM; thêm test cần jsdom/@testing-library mà story cấm dependency mới — giống mọi React component trong repo)
+- [x] [Review][Defer] Raw `88px` trong PatternGrid.module.css mâu thuẫn AD-5 (token-only) và chính comment "raw hợp thức duy nhất là 3px" của PracticeBlock.module.css [src/ui/PatternGrid.module.css:13] — deferred, pre-existing (cap max-width dùng giá trị mock; fix sạch cần token trong tokens.css — ngoài phạm vi story — hoặc bỏ cap sẽ đổi thị giác)
+
+Dismissed (noise/false-positive): (1) ô active không có aria-current cho SR — nhất quán với quy ước beat-visual trang trí (dots MetronomeBlock cũng `aria-hidden`), announce mỗi beat là SR noise; (2) test data chưa ép pattern.length bội số 4 — suy đoán, không data hiện tại nào vi phạm, "bội số 4" không phải invariant được ghi; (3) mount rule deps `[exercise]` thay `[]` — chính Auditor xác nhận không vi phạm, variance có chủ đích đã tài liệu hóa.
