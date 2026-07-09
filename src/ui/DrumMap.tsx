@@ -4,7 +4,7 @@
  * qua AudioContext dùng chung (AR-4). KHÔNG preload/autoplay — zero request .wav
  * trước click đầu tiên (UX-DR11/NFR-5). Hover CHỈ highlight bằng CSS, không phát âm.
  */
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { drumSamples } from '../core/audio'
 import { DRUM_KIT_PARTS } from './drum-kit-parts'
@@ -54,8 +54,10 @@ const REGION_GEOMETRY: Record<DrumKitPartId, RegionGeometry> = {
   kick: {
     cx: 380,
     cy: 255,
-    rx: 85,
-    ry: 85,
+    // r ≤ 81: tâm kick cách tâm tom ≈129.7 — r 85 giao tom ~3 đơn vị viewBox,
+    // kick render sau nên nuốt click ở dải mép dưới-phải của tom.
+    rx: 81,
+    ry: 81,
     labelY: 366,
     needsHitArea: false,
     stands: [],
@@ -96,9 +98,18 @@ const REGION_GEOMETRY: Record<DrumKitPartId, RegionGeometry> = {
  */
 const HIT_AREA_RADIUS = 44
 
+/*
+ * Chặn mash chuột/tap: giữ phím đã có cờ event.repeat, nhưng click liên thanh thì
+ * không — mỗi lần phát chồng thêm một source gain 0.9, vài tap nhanh là tổng biên độ
+ * vượt xa 1.0 → clip thô, phá luôn headroom SAMPLE_GAIN. 120ms đủ chặn mash nhưng
+ * không cản double-tap chủ đích nghe lại; chỉ chặn ÂM, highlight + panel vẫn cập nhật.
+ */
+const MIN_REPLAY_MS = 120
+
 export function DrumMap() {
   // UX-DR7: vùng đang active — null trước click đầu, panel hiện hint
-  const [active, setActive] = useState<string | null>(null)
+  const [active, setActive] = useState<DrumKitPartId | null>(null)
+  const lastPlayedAt = useRef<Partial<Record<DrumKitPartId, number>>>({})
 
   const activePart = DRUM_KIT_PARTS.find((part) => part.id === active)
 
@@ -106,6 +117,10 @@ export function DrumMap() {
   // play() lỗi trả false được bỏ qua — im lặng, panel vẫn hiện (UX-DR7, AC #3).
   const activate = (part: DrumKitPart) => {
     setActive(part.id)
+    const now = performance.now()
+    const last = lastPlayedAt.current[part.id]
+    if (last !== undefined && now - last < MIN_REPLAY_MS) return
+    lastPlayedAt.current[part.id] = now
     void drumSamples.play(part.soundUrl)
   }
 
