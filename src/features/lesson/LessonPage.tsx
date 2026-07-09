@@ -1,10 +1,10 @@
 // Trang Bài học (FR-4) — render từ getItemById (AD-2), không tự duyệt cây.
-// Story này KHÔNG render pattern-tempo-MetronomeBlock (2.4).
 import { Link, useParams } from 'react-router'
 import { ROUTES } from '../../app/routes'
 import { LESSON_KIND_LABEL } from '../../core/types'
 import { getItemById } from '../../content'
 import { DrumMap } from '../../ui/DrumMap'
+import { PracticeBlock } from '../../ui/PracticeBlock'
 import { VideoEmbed } from '../../ui/VideoEmbed'
 import styles from './LessonPage.module.css'
 
@@ -62,8 +62,9 @@ export function LessonPage() {
         </section>
       )}
 
-      {/* FR-4/KF-2: thứ tự mục tiêu → lý thuyết → sơ đồ (nếu có) → video → thực hành.
-          Guard videos.length > 0 — bài không video KHÔNG có section rỗng. */}
+      {/* FR-4/KF-1/KF-2: thứ tự mục tiêu → lý thuyết → sơ đồ (nếu có) → video →
+          luyện tập (nếu exercise) → thực hành. Guard videos.length > 0 — bài
+          không video KHÔNG có section rỗng. */}
       {item.videos.length > 0 && (
         <section>
           <h2 className={styles.sectionTitle}>Video hướng dẫn</h2>
@@ -73,6 +74,18 @@ export function LessonPage() {
               <VideoEmbed key={video.youtubeId} video={video} searchQuery={item.title} />
             ))}
           </div>
+        </section>
+      )}
+
+      {/* FR-11/12/13 (story 2.4): khối luyện tập TRƯỚC "Thực hành" — phần chữ
+          hướng dẫn đẩy xuống dưới (UX-DR12/KF-1). Union narrow theo kind nên
+          item.exercise có type đầy đủ; 6 bài theory không có section rỗng.
+          key={item.id}: đổi route giữa hai bài KHÔNG remount LessonPage — key ép
+          remount để mount rule AD-8 chạy lại cho bài mới (3.1 sẽ thêm link bài kế). */}
+      {item.kind === 'exercise' && (
+        <section>
+          <h2 className={styles.sectionTitle}>Luyện tập</h2>
+          <PracticeBlock key={item.id} exercise={item.exercise} />
         </section>
       )}
 

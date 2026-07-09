@@ -1,0 +1,42 @@
+/*
+ * PatternGrid — token-only (AD-5). 4 ô/hàng MỌI viewport: trong dải "4–8 ô/hàng
+ * khớp số phách" (UX-DR5), 4 = beatsPerBar mặc định nên mỗi hàng đúng một ô nhịp
+ * (pattern 8 → 2 hàng, 16 → 4 hàng); mobile "wrap 4 ô/hàng" (UX-DR12) tự thỏa.
+ * Cỡ chữ 56→40px mobile do tokens.css đổi giá trị token — không override ở đây.
+ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-3);
+  justify-content: center;
+  /* mock tham chiếu ô 88px — trần để pattern 4 ô không phình quá to trong card */
+  max-width: calc(4 * 88px + 3 * var(--spacing-3));
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-pattern-letter);
+  font-weight: var(--font-weight-pattern-letter);
+  border-radius: var(--pattern-cell-radius);
+  user-select: none;
+}
+
+/* R amber / L teal — nhất quán tuyệt đối, luôn kèm chữ (UX-DR5) */
+.cellRight {
+  color: var(--pattern-cell-right-color);
+}
+
+.cellLeft {
+  color: var(--pattern-cell-left-color);
+}
+
+/* Ô đang chạy: nền overlay + viền amber-bright — chỉ đổi màu/viền, không scale (UX-DR2) */
+.cellActive {
+  background: var(--pattern-cell-active-background);
+  outline: var(--pattern-cell-active-outline);
+}

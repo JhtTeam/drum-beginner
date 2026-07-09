@@ -1,0 +1,81 @@
+/*
+ * PracticeBlock — token-only (AD-5). Selector kép (.block .target …) để thắng
+ * `.article p` của LessonPage (tiền lệ DrumMap .panel .hint). Media query layout
+ * trong module được phép (tiền lệ MetronomeBlock/DrumMap); giá trị token không
+ * override ở đây. Raw hợp thức duy nhất: viền trái ghi chú 3px (mock, không có
+ * token độ dày riêng).
+ */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.card {
+  background: var(--card-background);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* UX-DR12 desktop: vùng pattern + beat dots + BPM chiếm ≥60% chiều cao viewport */
+@media (width >= 768px) {
+  .card {
+    min-height: 60vh;
+    justify-content: center;
+  }
+}
+
+.block .target {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-muted);
+}
+
+.block .target strong {
+  color: var(--color-text-secondary);
+}
+
+/* UX-DR12 mobile: cụm điều khiển tempo ghim đáy trong tầm ngón cái khi cuộn
+   pattern dài; tab bar mobile là position: fixed (AppLayout) nên phải cộng offset. */
+@media (width < 768px) {
+  .dock {
+    position: sticky;
+    bottom: calc(var(--nav-height-mobile-tabbar) + env(safe-area-inset-bottom, 0px) + var(--spacing-2));
+    background: var(--card-background);
+    padding: var(--spacing-2) 0;
+  }
+}
+
+/* Ghi chú kỹ thuật — viền trái amber-dim (DESIGN.md: vùng nhấn tĩnh cường độ thấp) */
+.notes {
+  background: var(--color-surface-raised);
+  /* 3px raw hợp thức: độ dày viền ghi chú theo mock, không có token riêng */
+  border-left: 3px solid var(--color-amber-dim);
+  border-radius: 0 var(--rounded-default) var(--rounded-default) 0;
+  padding: var(--spacing-3) var(--spacing-4);
+}
+
+.block .notesLabel {
+  margin: 0 0 var(--spacing-2);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  font-weight: var(--font-weight-h2);
+  color: var(--color-text-secondary);
+}
+
+.notesList {
+  margin: 0;
+  padding-left: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-secondary);
+}

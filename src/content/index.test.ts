@@ -162,6 +162,13 @@ describe('video data (FR-5, AR-7 — addendum B)', () => {
 })
 
 describe('exercise embed (AD-2, FR-14)', () => {
+  const allExercises = () =>
+    getPhases().flatMap((phase) =>
+      phase.weeks.flatMap((week) =>
+        week.items.flatMap((item) => (item.kind === 'exercise' ? [item] : [])),
+      ),
+    )
+
   it('mọi item kind exercise có embed pattern không rỗng và 40 ≤ from ≤ to ≤ 200', () => {
     for (const phase of getPhases()) {
       for (const week of phase.weeks) {
@@ -176,5 +183,21 @@ describe('exercise embed (AD-2, FR-14)', () => {
         }
       }
     }
+  })
+
+  // FR-12/UX-DR5: PatternGrid render 4 ô/hàng — pattern tối thiểu 4 nhát và có ghi chú kỹ thuật
+  it('mọi exercise có pattern ≥ 4 nhát và ≥ 1 ghi chú kỹ thuật (story 2.4)', () => {
+    for (const item of allExercises()) {
+      expect(item.exercise.pattern.length, item.id).toBeGreaterThanOrEqual(4)
+      expect(item.exercise.techniqueNotes.length, item.id).toBeGreaterThanOrEqual(1)
+    }
+  })
+
+  // FR-12: chốt hợp đồng data — thư viện tối thiểu 3 rudiment, chống sửa ẩu pattern
+  it('toàn phase tồn tại đủ 3 rudiment: single (RLRL), double (RRLL), paradiddle (RLRRLRLL)', () => {
+    const patterns = new Set(allExercises().map((item) => item.exercise.pattern.join('')))
+    expect(patterns).toContain('RLRL')
+    expect(patterns).toContain('RRLL')
+    expect(patterns).toContain('RLRRLRLL')
   })
 })
