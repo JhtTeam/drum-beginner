@@ -41,7 +41,7 @@
 # - Retrospective appends its action items to action_items; sprint-status surfaces open ones
 
 generated: 2026-07-08
-last_updated: 2026-07-08
+last_updated: 2026-07-09
 project: drum-beginner
 project_key: NOKEY
 tracking_system: file-system
@@ -56,8 +56,8 @@ development_status:
   epic-1-retrospective: optional
 
   # Epic 2: Học theo lộ trình Giai đoạn 1
-  epic-2: backlog
-  2-1-giao-trinh-giai-doan-1-trang-lo-trinh-trang-bai-hoc: backlog
+  epic-2: in-progress
+  2-1-giao-trinh-giai-doan-1-trang-lo-trinh-trang-bai-hoc: ready-for-dev
   2-2-video-youtube-trong-bai-hoc: backlog
   2-3-so-do-bo-trong-tuong-tac: backlog
   2-4-khoi-luyen-tap-stick-control-trong-bai: backlog
