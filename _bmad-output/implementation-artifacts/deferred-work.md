@@ -22,3 +22,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-3-metronome-block-hoan-chinh-trang-metronome-dung-duoc-that.md`
   summary: Comment đầu tokens.css ("Responsive override sống TẠI ĐÂY, không trong component") giờ mâu thuẫn chữ nghĩa với media query 768px ẩn hint kbd trong MetronomeBlock.module.css (story sanctioned) — cần một dòng reconcile trong tokens.css phân biệt token-value override vs layout visibility rule.
   evidence: src/styles/tokens.css header vs src/ui/MetronomeBlock.module.css cuối file; cùng loại doc-drift với mục RouterProvider đã ghi ở trên.
+
+## Deferred from: code review of spec-2-3-so-do-bo-trong-tuong-tac (2026-07-09)
+
+- Sample + tick metronome chồng đỉnh vẫn vượt 1.0 (0.85×0.9 + 1.0 ≈ 1.77) dù SAMPLE_GAIN 0.9 tạo headroom — cùng gốc với mục master gain stage của spec-1-2 ở trên (hai nguồn âm cộng biên độ thẳng vào destination, chưa có master gain/compressor). Giải quyết MỘT lần cho cả hai mục khi thêm master gain stage; sửa riêng SAMPLE_GAIN không đủ.
+- Nhãn SVG trong DrumMap render ~11.8px ở màn 375px (`fontSize={22}` đơn vị viewBox × scale ~0.54) — nhỏ hơn body text, không theo cỡ chữ hệ thống. Lý do defer (user, 2026-07-09): panel đã hiện tên đầy đủ khi chạm nên nhãn chỉ là gợi ý phụ; xem lại ở pass UX/a11y có kiểm chứng trên thiết bị thật (cùng đợt với các mục a11y defer từ story 1.3).

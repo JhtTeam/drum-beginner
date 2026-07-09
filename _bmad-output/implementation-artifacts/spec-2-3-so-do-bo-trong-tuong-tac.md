@@ -4,7 +4,7 @@ type: 'feature'
 created: '2026-07-09'
 status: 'done'
 baseline_revision: '495f0b9775a11ae733ff335a8a17a7afd138144f'
-final_revision: 'fcafd843d978b5ca836d8c5ad921bda3eeae6266'
+final_revision: 'ed1c4ee0b6e9be8ec14bdeb0cdcb3097bf71572a'
 review_loop_iteration: 0
 followup_review_recommended: false
 context:
@@ -98,6 +98,16 @@ warnings: [oversized]
 - Given file âm tải lỗi, when click vùng đó, then highlight + panel bình thường, im lặng không báo lỗi chặn; và không âm nào autoplay khi mở trang (UX-DR7, UX-DR11).
 - Given metronome đang chạy xuyên route, when click vùng trên trang bài học, then tick + sample cùng phát qua MỘT AudioContext, không vỡ tiếng rõ rệt.
 - Given toàn suite, when `npm run check`, then tsc -b + oxlint + vitest + vite build đều xanh.
+
+### Review Findings
+
+#### 2026-07-09 — Code review đối kháng (blind + edge + auditor, sau finalize fcafd84)
+
+- [x] [Review][Defer] Nhãn SVG render ~11.8px ở màn 375px (`fontSize={22}` × scale ~0.54) — user chốt defer 2026-07-09: xem lại ở pass UX/a11y sau khi có kiểm chứng trên thiết bị thật; panel đã hiện tên đầy đủ khi chạm nên nhãn chỉ là gợi ý phụ [src/ui/DrumMap.tsx:170] — deferred
+- [x] [Review][Patch] Đường chuột/tap không có guard chống bấm liên thanh — tap nhanh chồng source không giới hạn (5 tap crash ≈ tổng biên độ 3.8) gây clip thô, đúng kịch bản mà headroom SAMPLE_GAIN tuyên bố chống; keyboard đã có guard `event.repeat`, pointer chưa [src/ui/DrumMap.tsx:143] — FIXED: guard `MIN_REPLAY_MS` 120ms theo từng vùng trong `activate` (chỉ chặn âm, highlight + panel vẫn cập nhật)
+- [x] [Review][Patch] `useState<string | null>` bỏ phí union `DrumKitPartId` — `setActive('snre')` compile sạch, trái triết lý "gõ nhầm là lỗi tsc" của chính drum-kit-parts.ts [src/ui/DrumMap.tsx:101] — FIXED: `useState<DrumKitPartId | null>`
+- [x] [Review][Patch] Hình kick giao hình tom ~3 đơn vị viewBox (khoảng cách tâm ≈129.7 < 48+85=133) — dải mép dưới-phải của tom click ra kick vì kick render sau [src/ui/DrumMap.tsx:54-62] — FIXED: kick r 85 → 81 (48+81=129 ≤ 129.7, hết giao)
+- [x] [Review][Defer] Sample + tick chồng đỉnh vẫn vượt 1.0 (0.85×0.9 + 1.0 ≈ 1.77) dù có headroom — cùng gốc với mục master gain stage đã defer từ story 1.2 trong deferred-work.md; giải quyết một lần khi thêm master gain/compressor [src/core/audio/sample-player.ts:49] — deferred, pre-existing
 
 ## Spec Change Log
 
