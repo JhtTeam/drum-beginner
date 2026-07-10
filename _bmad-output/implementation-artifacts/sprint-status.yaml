@@ -41,7 +41,7 @@
 # - Retrospective appends its action items to action_items; sprint-status surfaces open ones
 
 generated: 2026-07-08
-last_updated: 2026-07-09
+last_updated: 2026-07-10
 project: drum-beginner
 project_key: NOKEY
 tracking_system: file-system
@@ -67,6 +67,6 @@ development_status:
   epic-3: in-progress
   3-1-progress-store-nut-hoan-thanh-bai-hom-nay: done
   3-2-trang-chu-hom-nay-streak: done
-  3-3-trang-tien-do-ghi-tempo-tot-nhat: backlog
+  3-3-trang-tien-do-ghi-tempo-tot-nhat: ready-for-dev
   3-4-export-import-tien-do: backlog
   epic-3-retrospective: optional
